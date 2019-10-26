@@ -1,0 +1,129 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Search - Kai Lossgott</title><meta name="robots" content="noindex, follow"><meta name="generator" content="Publii Open-Source CMS for Static Site"><link rel="alternate" type="application/atom+xml" href="https://klossgott.github.io/feed.xml"><link rel="alternate" type="application/json" href="https://klossgott.github.io/feed.json"><meta property="og:title" content="Kai Lossgott"><meta property="og:image" content="https://klossgott.github.io/media/website/celia-de-villiers_20.jpg"><meta property="og:site_name" content="Kai Lossgott"><meta property="og:description" content="Celia De Villiers is ....."><meta property="og:url" content="https://klossgott.github.io/"><meta property="og:type" content="website"><link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link href="https://fonts.googleapis.com/css?family=Heebo:400,500%7CPlayfair+Display:400&amp;display=swap" rel="stylesheet"><link rel="stylesheet" href="https://klossgott.github.io/assets/css/style.css?v=567f1013db78c348386b8395dd721f0a"><script type="application/ld+json">{"@context":"http://schema.org","@type":"Organization","name":"Kai Lossgott","url":"https://klossgott.github.io/"}</script><script async src="https://klossgott.github.io/assets/js/lazysizes.min.js?v=9c0e65e25f8f098037678ba0c2be1d9f"></script><link href="https://fonts.googleapis.com/css?family=Space+Mono&display=swap" rel="stylesheet"><style>body {
+  font-family: 'Space+Mono', sans-serif;
+  color: black;
+}
+p {
+    font-family: 'Space+Mono', sans-serif;
+}
+h1   {
+  font-family: 'Space+Mono', sans-serif;
+  color: gray;
+  font-weight: 50;
+  letter-spacing: 8px;
+  }
+  
+h2   {
+  font-family: 'Space+Mono', sans-serif;
+  color: gray;
+  font-weight: 100; 
+  letter-spacing: 5px;
+  }
+  
+  h3   {
+  font-family: 'Space+Mono', sans-serif;
+  color: white;
+  font-weight: 100; 
+  letter-spacing: 5px;
+  }
+  
+.logo   {
+  font-family: 'Space+Mono', sans-serif;
+  font-weight: 100;
+  letter-spacing: 5px;
+  }
+  
+.navbar__menu
+  {
+  color: white; 
+  letter-spacing: 1px;
+  }
+
+.inverse   {
+  font-family: 'Space+Mono', sans-serif;
+  letter-spacing: 5px;
+  }</style></head><body><div class="container"><header><a class="logo" href="https://klossgott.github.io/">Kai Lossgott</a><div class="top"><div class="top__search"><form action="https://klossgott.github.io/search.html" class="search"><input type="search" name="q" placeholder="search..."></form></div></div></header><main><div class="hero u-wrapper"><h1>Search</h1></div><div class="u-wrapper search-page"><form action="https://klossgott.github.io/search.html"><input type="search" name="q" placeholder="search..." class="search-page__input"></form><script>(function () {
+						var cx = '';
+						var gcse = document.createElement('script');
+						gcse.type  = 'text/javascript';
+						gcse.async = true;
+						gcse.src   = 'https://cse.google.com/cse.js?cx=' + cx;
+						var s = document.getElementsByTagName('script')[0];
+						s.parentNode.insertBefore(gcse, s);
+					})();</script><gcse:searchresults-only></gcse:searchresults-only></div></main><footer class="footer"><div class="footer__copyright">Powered by Publii</div></footer></div><script defer="defer" src="https://klossgott.github.io/assets/js/jquery-3.2.1.slim.min.js?v=5f48fc77cac90c4778fa24ec9c57f37d"></script><script defer="defer" src="https://klossgott.github.io/assets/js/scripts.min.js?v=16be857f09f55a0c76ea5e92e1f5f9d0"></script><div class="cookie-popup js-cookie-popup cookie-popup--uses-badge"><h2>This website uses cookies</h2><p>Select which cookies to opt-in to via the checkboxes below; our website uses cookies to examine site traffic and user activity while on our site, for marketing, and to provide social media functionality. <a href="#not-specified">More details...</a></p><form><input id="gdpr-necessary" name="gdpr-necessary" checked="checked" disabled="disabled" type="checkbox"> <label for="gdpr-necessary">Required</label> <input id="gdpr-functions" name="gdpr-functions" type="checkbox"> <label for="gdpr-functions">Functionality</label> <input id="gdpr-analytics" name="gdpr-analytics" type="checkbox"> <label for="gdpr-analytics">Analytical</label> <input id="gdpr-marketing" name="gdpr-marketing" type="checkbox"> <label for="gdpr-marketing">Marketing</label><p class="cookie-popup__save-wrapper"><button type="submit" class="cookie-popup__save">Save</button></p></form><span class="cookie-popup-label">Cookie Policy</span></div><script>(function() {
+                function addScript (src, inline) {
+                    var newScript = document.createElement('script');
+
+                    if (src) {
+                        newScript.setAttribute('src', src);
+                    }
+
+                    if (inline) {
+                        newScript.text = inline;
+                    }
+
+                    document.body.appendChild(newScript);
+                }
+
+                var popup = document.querySelector('.js-cookie-popup');
+                var checkboxes = popup.querySelectorAll('input[type="checkbox"]');
+                var save = popup.querySelector('button');
+                var currentConfig = localStorage.getItem('publii-gdpr-allowed-cookies');
+                var blockedScripts = document.querySelectorAll('script[type^="gdpr-blocker/"]');
+                
+
+                popup.addEventListener('click', function() {
+                    if (!popup.classList.contains('cookie-popup--is-sticky')) {
+                        popup.classList.add('cookie-popup--is-sticky');
+                    }
+                });
+
+                save.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    popup.classList.remove('cookie-popup--is-sticky');
+                    var allowedGroups = [];
+
+                    for (var i = 0; i < checkboxes.length; i++) {
+                        if (checkboxes[i].checked) {
+                            var groupName = checkboxes[i].getAttribute('name').replace('gdpr-', '');
+                            var scripts = document.querySelectorAll('script[type="gdpr-blocker/' + groupName + '"]');
+
+                            for (var j = 0; j < scripts.length; j++) {
+                                addScript(scripts[j].src, scripts[j].text);
+                            }
+
+                            allowedGroups.push(groupName);
+                        }
+                    }
+
+                    localStorage.setItem('publii-gdpr-allowed-cookies', allowedGroups.join(','));
+                    popup.classList.remove('cookie-popup--is-sticky');
+
+                    setTimeout(function () {
+                        if (currentConfig !== null) {
+                            window.location.reload();
+                        }
+                    }, 250);
+                });
+
+                if (currentConfig === null) {
+                    popup.classList.add('cookie-popup--is-sticky');
+                } else {
+                    if (currentConfig !== '') {
+                        var allowedGroups = currentConfig.split(',');
+
+                        for (var i = 0; i < allowedGroups.length; i++) {
+                            var scripts = document.querySelectorAll('script[type="gdpr-blocker/' + allowedGroups[i] + '"]');
+                            var checkbox = popup.querySelector('input[type="checkbox"][name="gdpr-' + allowedGroups[i] + '"]');
+
+                            if (checkbox) {
+                                checkbox.checked = true;
+                            }
+
+                            for (var j = 0; j < scripts.length; j++) {
+                                addScript(scripts[j].src, scripts[j].text);
+                            }
+                        }
+                    }
+                }
+            })();</script></body></html>
