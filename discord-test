@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<widgetbot
+    server="1023273207735799939"
+    channel="1023273208738230323"
+    width="800"
+    height="600"
+></widgetbot>
+<script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
+
+<body>
+The content of the body element is displayed in your browser.
+</body>
+
+</html>
