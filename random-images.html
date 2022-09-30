@@ -6,24 +6,34 @@
 <meta name="keywords" content="random image">
 </head>
 <body>
-<section id="iru-ads-widget-4" class="widget iru-ads">
-   			<a href="http://www.google.com">	
-	   			<img src="https://images.squarespace-cdn.com/content/v1/542451b5e4b0b6739e3ba5ec/1413905372300-INZB4JV3B1U29JBK9849/image-asset.jpeg" class="iru_random"> 
-	   		</a>
-</section>
+<script type="text/javascript">
+<!--
+ var imlocation = "images/";
+ var currentdate = 0;
+ var image_number = 0;
+ function ImageArray (n) {
+   this.length = n;
+   for (var i =1; i <= n; i++) {
+     this[i] = ' '
+   }
+ }
+ image = new ImageArray(3)
+ image[0] = '8aa93a77f136bf618854c7208e9cf7ec.jpg'
+ image[1] = 'ea684ddbecc54823ee50a9c1d482a365--literacy-skills-literacy-activities.jpg'
+ image[2] = 'eb4b392a0dab3dc7f757d54987a6fd19.jpg'
+image[3] = 'images.jpg'
+	 image[4] = 'images%20(1).jpg'
+	 image[5] = 'hand-drawn-ink-pen-scribbles_75474-6667.jpg'
 
-<section id="iru-ads-widget-6" class="widget iru-ads">
-    	<a href="http://behance.com">	
-	   		<img src="https://images.squarespace-cdn.com/content/v1/542451b5e4b0b6739e3ba5ec/1414680830490-EHNY1UA4Z0E1E2TU1G0P/image-asset.jpeg" class="iru_random"> 
-	   	</a>
-	   
-</section>
-
-<section id="iru-ads-widget-7" class="widget iru-ads">
-    	<a href="http://www/.facebook.com">	
-	   		<img src="https://poetarieldotnet.files.wordpress.com/2019/08/896b24c5f2f8f74764d9ea71131190b4.jpg" class="iru_random"> 
-	   	</a>
-	   
-</section>
+ var rand = 60/image.length
+ function randomimage() {
+ 	currentdate = new Date()
+ 	image_number = currentdate.getSeconds()
+ 	image_number = Math.floor(image_number/rand)
+ 	return(image[image_number])
+ }
+ document.write("<img src='" + imlocation + randomimage()+ "'>");
+//-->
+</script>
 </body>
 </html>
