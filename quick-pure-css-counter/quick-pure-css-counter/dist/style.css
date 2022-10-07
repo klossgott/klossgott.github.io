@@ -1,0 +1,119 @@
+.countdown {
+  display: grid;
+  margin: 1em auto;
+  width: 20em;
+  height: 20em;
+}
+.countdown::after {
+  grid-column: 1;
+  grid-row: 1;
+  place-self: center;
+  font: 5em/2 ubuntu mono, consolas, monaco, monospace;
+  animation: num 20s steps(1) infinite;
+  content: "0:" counter(s, decimal-leading-zero);
+}
+
+@keyframes num {
+  0% {
+    counter-reset: s 20;
+  }
+  5% {
+    counter-reset: s 19;
+  }
+  10% {
+    counter-reset: s 18;
+  }
+  15% {
+    counter-reset: s 17;
+  }
+  20% {
+    counter-reset: s 16;
+  }
+  25% {
+    counter-reset: s 15;
+  }
+  30% {
+    counter-reset: s 14;
+  }
+  35% {
+    counter-reset: s 13;
+  }
+  40% {
+    counter-reset: s 12;
+  }
+  45% {
+    counter-reset: s 11;
+  }
+  50% {
+    counter-reset: s 10;
+  }
+  55% {
+    counter-reset: s 9;
+  }
+  60% {
+    counter-reset: s 8;
+  }
+  65% {
+    counter-reset: s 7;
+  }
+  70% {
+    counter-reset: s 6;
+  }
+  75% {
+    counter-reset: s 5;
+  }
+  80% {
+    counter-reset: s 4;
+  }
+  85% {
+    counter-reset: s 3;
+  }
+  90% {
+    counter-reset: s 2;
+  }
+  95% {
+    counter-reset: s 1;
+  }
+  100% {
+    counter-reset: s 0;
+  }
+}
+svg {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+[r] {
+  fill: none;
+  stroke: silver;
+}
+[r] + [r] {
+  transform: rotate(-90deg);
+  stroke-linecap: round;
+  stroke: #8A9B0F;
+  animation: arc 20s linear infinite;
+  animation-name: arc, col;
+}
+
+@keyframes arc {
+  0% {
+    stroke-dashoffset: 0px;
+  }
+}
+@keyframes col {
+  0% {
+    stroke: #8A9B0F;
+  }
+  25% {
+    stroke: #F8CA00;
+  }
+  50% {
+    stroke: #E97F02;
+  }
+  75% {
+    stroke: #BD1550;
+  }
+  100% {
+    stroke: #490A3D;
+  }
+}

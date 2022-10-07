@@ -1,0 +1,8 @@
+- let d = 100, o = -.5*d;
+- let sw = .1*d, r = .5*(d - sw);
+- let len = 2*Math.PI*r;
+
+.countdown
+	svg(viewBox=[o, o, d, d].join(' ') stroke-width=sw)
+		circle(r=r)
+		circle(r=r stroke-dasharray=len stroke-dashoffset=`${len}px`)
