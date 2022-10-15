@@ -1,39 +1,63 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-<title>random images</title>
-<meta name="description" content="image randomiser">
-<meta name="keywords" content="random image">
-</head>
-<body>
-<script type="text/javascript">
-<!--
- var imlocation = "https://klossgott.github.io/";
- var currentdate = 0;
- var image_number = 0;
- function ImageArray (n) {
-   this.length = n;
-   for (var i =1; i <= n; i++) {
-     this[i] = ' '
-   }
- }
- image = new ImageArray(6)
- image[0] = '8aa93a77f136bf618854c7208e9cf7ec.jpg'
- image[1] = 'ea684ddbecc54823ee50a9c1d482a365--literacy-skills-literacy-activities.jpg'
- image[2] = 'eb4b392a0dab3dc7f757d54987a6fd19.jpg'
-image[3] = 'images.jpg'
-	 image[4] = 'images%20(1).jpg'
-	 image[5] = 'hand-drawn-ink-pen-scribbles_75474-6667.jpg'
+  <head>
+    <title>random images</title>
+    <meta name="description" content="image randomiser" />
+    <meta name="keywords" content="random image" />
+  </head>
+  <body>
+    <script type="text/javascript">
+      var imlocation = "https://klossgott.github.io/";
+      var currentdate = 0;
+      var image_number = 0;
+      function ImageArray(n) {
+        this.length = n;
+        for (var i = 1; i <= n; i++) {
+          this[i] = " ";
+        }
+      }
+      image = new ImageArray(6);
+      image[0] = "8aa93a77f136bf618854c7208e9cf7ec.jpg";
+      image[1] =
+        "ea684ddbecc54823ee50a9c1d482a365--literacy-skills-literacy-activities.jpg";
+      image[2] = "eb4b392a0dab3dc7f757d54987a6fd19.jpg";
+      image[3] = "images.jpg";
+      image[4] = "images%20(1).jpg";
+      image[5] = "hand-drawn-ink-pen-scribbles_75474-6667.jpg";
 
- var rand = 60/image.length
- function randomimage() {
- 	currentdate = new Date()
- 	image_number = currentdate.getSeconds()
- 	image_number = Math.floor(image_number/rand)
- 	return(image[image_number])
- }
- document.write("<img src='" + imlocation + randomimage()+ "'>");
-//-->
-</script>
-</body>
+      var rand = 60 / image.length;
+      function randomimage() {
+        image_number = Math.floor(Math.random() * image.length);
+
+        return image[image_number];
+      }
+      function showImage() {
+        document.getElementById("image").src =
+          "" + imlocation + randomimage() + "";
+
+        console.log("" + imlocation + randomimage() + "");
+      }
+    </script>
+    
+      <img
+        id="image"
+        src="https://klossgott.github.io/hand-drawn-ink-pen-scribbles_75474-6667.jpg"
+        alt=""
+        onclick="showImage()"
+      
+    </div>
+
+    <style>
+      #image {
+        padding-top: 10px;
+        height: 35em;
+        width: 35em;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 40%;
+      }
+      
+    </style>
+  </body>
 </html>
