@@ -26,7 +26,6 @@
     ></script>
     <script>
       window.addEventListener("load", function () {
-        var imlocation = ".";
         var currentdate = 0;
         var image_number = 0;
         let image = [];
@@ -57,7 +56,7 @@
         }
         function showImage() {
           document.getElementById("image").src =
-            "" + imlocation + randomimage() + "";
+            "" + randomimage() + "";
         }
       });
     </script>
