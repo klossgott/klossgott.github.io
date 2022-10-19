@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>random images</title>
+    <meta name="description" content="image randomiser" />
+    <meta name="keywords" content="random image" />
+    <style>
+      #image {
+        padding-top: 10px;
+        height: 14.5625em;
+        width: 25.875em;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 60%;
+        height: 60%;
+      }
+    </style>
+  </head>
+  <body>
+    <img
+      id="image"
+      src="https://klossgott.github.io/tap_here.JPEG"
+      alt=""
+      onclick="showImage()"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.6.1.min.js"
+      integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      var imlocation = ".";
+      var currentdate = 0;
+      var image_number = 0;
+      let image = [];
+
+      // LOAD IMAGES FROM FOLDER
+      var folder = "images/";
+
+      $.ajax({
+        url: folder,
+        success: function (data) {
+          $(data)
+            .find("a")
+            .attr("href", function (i, val) {
+              if (val.match(/\.(jpe?g|png|gif|JPEG)$/)) {
+                image.push(val);
+              }
+            });
+        },
+      });
+
+      var rand = 60 / image.length;
+      function randomimage() {
+        image_number = Math.floor(Math.random() * image.length);
+
+        return image[image_number];
+      }
+      function showImage() {
+        document.getElementById("image").src =
+          "" + imlocation + randomimage() + "";
+      }
+    </script>
+  </body>
+</html>
