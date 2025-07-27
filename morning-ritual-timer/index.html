@@ -4,17 +4,496 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Morning Ritual Timer - 30 Day Reset Challenge</title>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { margin: 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; font-family: system-ui, -apple-system, sans-serif; }
+        body { 
+            margin: 0; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            min-height: 100vh; 
+            font-family: system-ui, -apple-system, sans-serif; 
+        }
+        #loading {
+            color: white;
+            text-align: center;
+            padding: 50px;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
-    <div id="root"></div>
-    <script type="text/babel" src="./app.js"></script>
+    <div id="root">
+        <div id="loading">Loading Morning Ritual Timer...</div>
+    </div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        
+        // Lucide icons as simple components
+        const Play = () => React.createElement('svg', { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 }, 
+            React.createElement('polygon', { points: "5,3 19,12 5,21" }));
+        
+        const Pause = () => React.createElement('svg', { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 },
+            React.createElement('rect', { x: 6, y: 4, width: 4, height: 16 }),
+            React.createElement('rect', { x: 14, y: 4, width: 4, height: 16 }));
+        
+        const RotateCcw = () => React.createElement('svg', { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 },
+            React.createElement('path', { d: "M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" }),
+            React.createElement('path', { d: "M3 3v5h5" }));
+
+        const Sun = () => React.createElement('svg', { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 },
+            React.createElement('circle', { cx: 12, cy: 12, r: 5 }),
+            React.createElement('path', { d: "M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" }));
+
+        const Snowflake = () => React.createElement('svg', { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 },
+            React.createElement('path', { d: "M2 12h20M12 2v20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14" }));
+
+        const Music = () => React.createElement('svg', { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 },
+            React.createElement('path', { d: "M9 18V5l12-2v13" }),
+            React.createElement('circle', { cx: 6, cy: 18, r: 3 }),
+            React.createElement('circle', { cx: 18, cy: 16, r: 3 }));
+
+        const Coffee = () => React.createElement('svg', { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 },
+            React.createElement('path', { d: "M18 8h1a4 4 0 0 1 0 8h-1" }),
+            React.createElement('path', { d: "M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" }));
+
+        const Heart = () => React.createElement('svg', { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 },
+            React.createElement('path', { d: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" }));
+
+        const Target = () => React.createElement('svg', { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 },
+            React.createElement('circle', { cx: 12, cy: 12, r: 10 }),
+            React.createElement('circle', { cx: 12, cy: 12, r: 6 }),
+            React.createElement('circle', { cx: 12, cy: 12, r: 2 }));
+
+        const Eye = () => React.createElement('svg', { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 },
+            React.createElement('path', { d: "M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" }),
+            React.createElement('circle', { cx: 12, cy: 12, r: 3 }));
+
+        const Share2 = () => React.createElement('svg', { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 },
+            React.createElement('circle', { cx: 18, cy: 5, r: 3 }),
+            React.createElement('circle', { cx: 6, cy: 12, r: 3 }),
+            React.createElement('circle', { cx: 18, cy: 19, r: 3 }),
+            React.createElement('path', { d: "M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" }));
+
+        const Volume2 = () => React.createElement('svg', { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 },
+            React.createElement('polygon', { points: "11,5 6,9 2,9 2,15 6,15 11,19" }),
+            React.createElement('path', { d: "M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" }));
+
+        const VolumeX = () => React.createElement('svg', { width: 24, height: 24, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2 },
+            React.createElement('polygon', { points: "11,5 6,9 2,9 2,15 6,15 11,19" }),
+            React.createElement('path', { d: "M23 9l-6 6M17 9l6 6" }));
+
+        const MorningRitualTimer = () => {
+          const [currentPhase, setCurrentPhase] = useState(0);
+          const [timeLeft, setTimeLeft] = useState(0);
+          const [isRunning, setIsRunning] = useState(false);
+          const [isCompleted, setIsCompleted] = useState(false);
+          const [rewardGif, setRewardGif] = useState(null);
+          const [rewardSticker, setRewardSticker] = useState(null);
+          const [audioEnabled, setAudioEnabled] = useState(() => {
+            try {
+              const saved = localStorage?.getItem('audioEnabled');
+              return saved ? JSON.parse(saved) : false;
+            } catch {
+              return false;
+            }
+          });
+          const [audioPlaying, setAudioPlaying] = useState(false);
+          const audioRef = useRef(null);
+          
+          const [dayCount, setDayCount] = useState(() => {
+            try {
+              const saved = localStorage?.getItem('resetChallengeDays');
+              return saved ? parseInt(saved) : 1;
+            } catch {
+              return 1;
+            }
+          });
+
+          const phases = [
+            {
+              name: "Light & Hydration",
+              icon: Sun,
+              duration: 10, // 10 seconds for testing
+              color: "#fef3c7",
+              instructions: "Let the morning light find you.",
+              guidance: "Step outside or open those curtains. Let the light touch your face. Sip some water slowly - maybe with a pinch of salt or lemon."
+            },
+            {
+              name: "Cool Refresh", 
+              icon: Snowflake,
+              duration: 5,
+              color: "#dbeafe",
+              instructions: "Here comes your moment of gentle courage.",
+              guidance: "At the end of your warm shower, turn the water cool for just 30 seconds. Breathe slowly and deeply."
+            },
+            {
+              name: "Movement to Music",
+              icon: Music,
+              duration: 10,
+              color: "#dcfce7",
+              instructions: "What song makes your spirit dance?",
+              guidance: "Put on music that lifts your soul. Dance, stretch, sway - however feels good."
+            },
+            {
+              name: "Nourishing Fuel",
+              icon: Coffee,
+              duration: 10,
+              color: "#fce7f3",
+              instructions: "What will nourish your body today?",
+              guidance: "Prepare protein mindfully - eggs, yogurt, or a protein shake. This is self-care in action."
+            },
+            {
+              name: "Gratitude",
+              icon: Heart,
+              duration: 10,
+              color: "#ede9fe",
+              instructions: "What fills your heart with warmth?",
+              guidance: "Place your hand on your heart. Think of three things you appreciate. Feel that warmth."
+            },
+            {
+              name: "Intentions", 
+              icon: Target,
+              duration: 10,
+              color: "#dbeafe",
+              instructions: "What would make today meaningful?",
+              guidance: "Consider 1-3 things that matter most today. What would make you feel proud this evening?"
+            },
+            {
+              name: "Visualization",
+              icon: Eye, 
+              duration: 10,
+              color: "#ccfbf1",
+              instructions: "Can you see yourself moving through today with grace?",
+              guidance: "Close your eyes. See yourself accomplishing your intentions with ease and confidence."
+            }
+          ];
+
+          const gifTerms = ['woman celebrating morning', 'peaceful morning meditation', 'self care success'];
+          const stickerTerms = ['thumbs up', 'clapping', 'sparkles', 'confetti', 'heart', 'star'];
+          const startButtonTexts = ["Begin Gently", "Start Softly", "Begin With Grace", "Start Your Ritual", "Begin Mindfully"];
+          const completionMessages = [
+            "You did it. You showed up for yourself today.",
+            "That's how you start a day with intention.",
+            "You've given yourself the gift of presence and strength.",
+            "You're building something beautiful, one day at a time.",
+            "You chose to begin. That's everything."
+          ];
+
+          const enableAudio = () => {
+            setAudioEnabled(true);
+            try {
+              localStorage?.setItem('audioEnabled', 'true');
+            } catch {}
+          };
+
+          const playPhaseAudio = (phaseText) => {
+            if (!audioEnabled) return;
+            
+            if ('speechSynthesis' in window) {
+              const utterance = new SpeechSynthesisUtterance(phaseText);
+              utterance.rate = 0.8;
+              utterance.pitch = 1.0;
+              speechSynthesis.speak(utterance);
+            }
+          };
+
+          // Timer logic
+          useEffect(() => {
+            let interval = null;
+            if (isRunning && timeLeft > 0) {
+              interval = setInterval(() => {
+                setTimeLeft(timeLeft - 1);
+              }, 1000);
+            } else if (isRunning && timeLeft === 0) {
+              if (currentPhase < phases.length - 1) {
+                setCurrentPhase(currentPhase + 1);
+                setTimeLeft(phases[currentPhase + 1].duration);
+              } else {
+                completeRitual();
+              }
+            }
+            return () => clearInterval(interval);
+          }, [isRunning, timeLeft, currentPhase]);
+
+          const fetchRewardGif = async () => {
+            try {
+              const term = gifTerms[Math.floor(Math.random() * gifTerms.length)];
+              const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=cOYmv8uODh0R6j65dPvypGTrw0vHO9L5&q=${encodeURIComponent(term)}&limit=1&rating=g`);
+              if (response.ok) {
+                const json = await response.json();
+                if (json.data && json.data.length > 0) {
+                  setRewardGif(json.data[0].images.fixed_height.url);
+                  fetchRewardSticker();
+                }
+              }
+            } catch (error) {
+              console.error('GIF fetch error:', error);
+            }
+          };
+
+          const fetchRewardSticker = async () => {
+            try {
+              const term = stickerTerms[Math.floor(Math.random() * stickerTerms.length)];
+              const response = await fetch(`https://api.giphy.com/v1/stickers/search?api_key=cOYmv8uODh0R6j65dPvypGTrw0vHO9L5&q=${encodeURIComponent(term)}&limit=1&rating=g`);
+              if (response.ok) {
+                const json = await response.json();
+                if (json.data && json.data.length > 0) {
+                  setRewardSticker(json.data[0].images.fixed_height.url);
+                }
+              }
+            } catch (error) {
+              console.error('Sticker fetch error:', error);
+            }
+          };
+
+          const completeRitual = () => {
+            setIsCompleted(true);
+            setIsRunning(false);
+            
+            const newDayCount = dayCount + 1;
+            setDayCount(newDayCount);
+            
+            try {
+              localStorage?.setItem('resetChallengeDays', newDayCount.toString());
+            } catch {}
+            
+            const message = `${completionMessages[Math.floor(Math.random() * completionMessages.length)]} This is day ${newDayCount} of your journey.`;
+            playPhaseAudio(message);
+            
+            fetchRewardGif();
+          };
+
+          const startTimer = () => {
+            if (!isRunning && timeLeft === 0) {
+              setTimeLeft(phases[currentPhase].duration);
+            }
+            setIsRunning(true);
+            
+            const guidance = currentPhase === 0 
+              ? `Good morning. ${phases[currentPhase].instructions} ${phases[currentPhase].guidance}`
+              : `${phases[currentPhase].instructions} ${phases[currentPhase].guidance}`;
+            
+            playPhaseAudio(guidance);
+          };
+
+          const pauseTimer = () => setIsRunning(false);
+
+          const resetTimer = () => {
+            setIsRunning(false);
+            setCurrentPhase(0);
+            setTimeLeft(phases[0].duration);
+            setIsCompleted(false);
+            setRewardGif(null);
+            setRewardSticker(null);
+          };
+
+          const skipToPhase = (phaseIndex) => {
+            setCurrentPhase(phaseIndex);
+            setTimeLeft(phases[phaseIndex].duration);
+            setIsRunning(false);
+          };
+
+          const formatTime = (seconds) => {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+          };
+
+          const generateShareText = () => {
+            const streakText = dayCount === 1 ? "Started my" : `Day ${dayCount} of my`;
+            return `${streakText} 30-Day Reset Challenge! 🌅 Taking time each morning to show up with intention. Who's joining me? #30DayReset #SelfCare #WakeUpAndRise`;
+          };
+
+          const currentPhaseData = phases[currentPhase];
+          const IconComponent = currentPhaseData.icon;
+          const progress = ((currentPhase + (currentPhase < phases.length ? (phases[currentPhase].duration - timeLeft) / phases[currentPhase].duration : 1)) / phases.length) * 100;
+
+          if (isCompleted) {
+            return React.createElement('div', {
+              className: "max-w-md mx-auto rounded-3xl p-8 text-center shadow-2xl relative overflow-hidden transition-all duration-1000",
+              style: { backgroundColor: currentPhaseData.color }
+            }, 
+              React.createElement('div', { className: "relative z-10" },
+                React.createElement('div', { className: "text-5xl mb-4" }, "🌅"),
+                React.createElement('h2', { className: "text-2xl font-light mb-2 text-gray-700" }, "Well done."),
+                React.createElement('div', { className: "text-6xl font-light text-gray-600 mb-4" }, dayCount),
+                React.createElement('p', { className: "text-lg text-gray-600 mb-6" },
+                  dayCount === 1 ? "Your journey begins." : dayCount >= 30 ? "Journey complete!" : "Days of showing up for yourself."),
+                
+                React.createElement('div', { className: "bg-white/40 rounded-2xl p-6 mb-6 backdrop-blur-sm relative" },
+                  rewardGif && React.createElement('div', { className: "mb-4 relative" },
+                    React.createElement('img', { 
+                      src: rewardGif, 
+                      alt: "Celebration", 
+                      className: "w-48 h-48 mx-auto rounded-lg object-cover"
+                    }),
+                    rewardSticker && React.createElement('img', {
+                      src: rewardSticker,
+                      alt: "Celebration sticker",
+                      className: "absolute top-2 right-2 w-16 h-16 opacity-80 pointer-events-none animate-pulse"
+                    })
+                  ),
+                  React.createElement('p', { className: "text-gray-700 mb-4 font-medium" }, 
+                    completionMessages[Math.floor(Math.random() * completionMessages.length)]),
+                  React.createElement('div', { className: "text-3xl mb-4" }, "✨"),
+                  React.createElement('p', { className: "text-sm text-gray-600" },
+                    dayCount >= 30 ? "You've completed the full transformation!" : `${30 - dayCount} more opportunities to keep showing up.`)
+                ),
+
+                React.createElement('div', { className: "space-y-3" },
+                  React.createElement('button', {
+                    onClick: () => {
+                      const text = generateShareText();
+                      if (navigator.share) {
+                        navigator.share({ title: 'Wake Up and Rise - 30-Day Challenge', text });
+                      } else if (navigator.clipboard) {
+                        navigator.clipboard.writeText(text);
+                      }
+                    },
+                    className: "w-full bg-white/60 text-gray-700 px-6 py-3 rounded-full font-medium hover:bg-white/80 transition-all duration-300 flex items-center justify-center gap-2"
+                  },
+                    React.createElement(Share2, { className: "w-5 h-5" }),
+                    "Share Your Progress"
+                  ),
+                  React.createElement('button', {
+                    onClick: resetTimer,
+                    className: "w-full bg-white/60 text-gray-700 px-6 py-3 rounded-full font-medium hover:bg-white/80 transition-all duration-300"
+                  }, "Tomorrow Awaits")
+                )
+              )
+            );
+          }
+
+          return React.createElement('div', {
+            className: "max-w-md mx-auto rounded-3xl shadow-2xl overflow-hidden transition-all duration-1000 ease-in-out",
+            style: { backgroundColor: currentPhaseData.color }
+          },
+            // Header
+            React.createElement('div', { className: "bg-white/30 text-gray-700 p-6 text-center relative overflow-hidden" },
+              React.createElement('div', { className: "relative z-10" },
+                React.createElement('div', { className: "flex items-center justify-between mb-3" },
+                  React.createElement('div', { className: "flex items-center gap-2" },
+                    React.createElement('button', {
+                      onClick: () => setAudioEnabled(!audioEnabled),
+                      className: "p-2 rounded-full bg-white/20 hover:bg-white/40 transition-colors",
+                      title: audioEnabled ? "Audio enabled" : "Enable audio"
+                    },
+                      React.createElement(audioEnabled ? Volume2 : VolumeX, { className: "w-4 h-4" })
+                    ),
+                    !audioEnabled && React.createElement('button', {
+                      onClick: enableAudio,
+                      className: "px-3 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
+                    }, "Enable Voice 🔊")
+                  ),
+                  React.createElement('div', { className: "text-center" },
+                    React.createElement('div', { className: "text-sm opacity-70" }, `Day ${dayCount} of 30`),
+                    React.createElement('div', { className: "text-xs opacity-60" }, "Reset Challenge")
+                  )
+                ),
+                React.createElement('div', { className: "flex items-center justify-center gap-3 mb-3" },
+                  React.createElement(IconComponent, { className: "w-8 h-8" }),
+                  React.createElement('div', null,
+                    React.createElement('h1', { className: "text-2xl font-light" }, currentPhaseData.name),
+                    React.createElement('p', { className: "text-sm opacity-80" }, `Step ${currentPhase + 1} of ${phases.length}`)
+                  )
+                )
+              )
+            ),
+
+            // Progress bar
+            React.createElement('div', { className: "bg-gray-200 h-2" },
+              React.createElement('div', { 
+                className: "bg-gray-600 h-full transition-all duration-1000 ease-out",
+                style: { width: `${progress}%` }
+              })
+            ),
+
+            // Current Phase Content
+            React.createElement('div', { className: "p-6 space-y-6" },
+              React.createElement('div', { className: "text-center" },
+                React.createElement('div', { className: "text-6xl font-light text-gray-600 mb-4 font-mono tracking-wider" },
+                  formatTime(timeLeft)
+                )
+              ),
+
+              React.createElement('div', { className: "bg-white/30 rounded-2xl p-6" },
+                React.createElement('h3', { className: "font-medium mb-3 text-gray-700 text-lg" }, currentPhaseData.instructions),
+                React.createElement('p', { className: "text-gray-600 leading-relaxed text-sm" }, currentPhaseData.guidance),
+                audioPlaying && React.createElement('div', { className: "mt-3 text-xs text-blue-600 flex items-center gap-1" },
+                  React.createElement(Music, { className: "w-3 h-3" }),
+                  "Background music playing"
+                )
+              ),
+
+              // Controls
+              React.createElement('div', { className: "flex justify-center gap-4" },
+                !isRunning ? 
+                  React.createElement('button', {
+                    onClick: startTimer,
+                    className: "bg-white/50 text-gray-700 px-8 py-4 rounded-full font-medium hover:bg-white/70 transition-all duration-300 flex items-center gap-2"
+                  },
+                    React.createElement(Play, { className: "w-5 h-5" }),
+                    startButtonTexts[Math.floor(Math.random() * startButtonTexts.length)]
+                  ) :
+                  React.createElement('button', {
+                    onClick: pauseTimer,
+                    className: "bg-white/50 text-gray-700 px-8 py-4 rounded-full font-medium hover:bg-white/70 transition-all duration-300 flex items-center gap-2"
+                  },
+                    React.createElement(Pause, { className: "w-5 h-5" }),
+                    "Pause"
+                  ),
+                
+                React.createElement('button', {
+                  onClick: resetTimer,
+                  className: "bg-white/50 text-gray-600 px-6 py-4 rounded-full font-medium hover:bg-white/70 transition-all duration-300 flex items-center gap-2"
+                },
+                  React.createElement(RotateCcw, { className: "w-5 h-5" }),
+                  "Reset"
+                )
+              ),
+
+              // Phase Navigation
+              React.createElement('div', { className: "border-t border-white/20 pt-6" },
+                React.createElement('p', { className: "text-sm font-medium mb-4 text-gray-600 text-center" }, "Your morning ritual:"),
+                React.createElement('div', { className: "grid grid-cols-7 gap-2" },
+                  phases.map((phase, index) =>
+                    React.createElement('button', {
+                      key: index,
+                      onClick: () => skipToPhase(index),
+                      className: `p-3 rounded-2xl text-xs font-medium transition-all duration-300 ${
+                        index === currentPhase 
+                          ? 'bg-white/50 text-gray-700 shadow-md scale-105' 
+                          : index < currentPhase 
+                            ? 'bg-white/30 text-gray-600'
+                            : 'bg-white/20 text-gray-400 hover:bg-white/30'
+                      }`
+                    },
+                      React.createElement(phase.icon, { className: "w-4 h-4 mx-auto mb-1" }),
+                      React.createElement('div', { className: "text-xs" }, index + 1)
+                    )
+                  )
+                )
+              ),
+
+              // Community Connection
+              React.createElement('div', { className: "bg-white/30 p-4 rounded-2xl" },
+                React.createElement('div', { className: "flex items-center gap-2 mb-2" },
+                  React.createElement(Heart, { className: "w-5 h-5 text-gray-600" }),
+                  React.createElement('span', { className: "font-medium text-gray-700" }, "Community Support")
+                ),
+                React.createElement('p', { className: "text-sm text-gray-600" },
+                  "Share your morning playlist with your group! What music helps you start your day with intention? 🎵"
+                )
+              )
+            )
+          );
+        };
+
+        ReactDOM.render(React.createElement(MorningRitualTimer), document.getElementById('root'));
+    </script>
 </body>
 </html>
