@@ -135,6 +135,43 @@
             text-align: center;
         }
 
+        /* GIF Container */
+        .gif-container {
+            height: 140px;
+            width: 100%;
+            max-width: 240px;
+            margin: 0 auto 20px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gif-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+
+        .gif-container img:hover {
+            transform: scale(1.02);
+        }
+
+        .gif-container .fallback-emoji {
+            font-size: 64px;
+            opacity: 0.7;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+        }
+
         /* Timer display with glow effect */
         .timer-display {
             font-size: 56px;
@@ -413,6 +450,11 @@
 
         <!-- Main App -->
         <div class="content" id="app">
+            <!-- GIF Container -->
+            <div class="gif-container" id="gifContainer">
+                <div class="fallback-emoji">☀️</div>
+            </div>
+
             <!-- Timer -->
             <div class="timer-display" id="timerDisplay">10:00</div>
 
@@ -500,66 +542,73 @@
         const phases = [
             {
                 name: 'Light & Hydration',
-                duration: 10, // 10 seconds for testing
+                duration: 600, // 10 minutes
                 iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
                 iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
                 color: 'phase-light',
                 instructions: 'Let the morning light find you.',
-                guidance: 'Step outside or open those curtains. Let the light touch your face. Sip some water slowly - maybe with a pinch of salt or lemon. This is your sacred time for light, water, and gentle presence. Add yoga or meditation if you wish. Take it slow.'
+                guidance: 'Step outside or open those curtains. Let the light touch your face. Sip some water slowly - maybe with a pinch of salt or lemon. This is your sacred time for light, water, and gentle presence. Add yoga or meditation if you wish. Take it slow.',
+                gifFolder: 'sunshine'
             },
             {
                 name: 'Cool Refresh',
-                duration: 5, // 5 seconds for testing
+                duration: 30, // 30 seconds
                 iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/></svg>',
                 iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/></svg>',
                 color: 'phase-cool',
                 instructions: 'Here comes your moment of gentle courage.',
-                guidance: 'At the end of your warm shower, turn the water cool for just 30 seconds. Breathe slowly and deeply. You\'ve got this.'
+                guidance: 'At the end of your warm shower, turn the water cool for just 30 seconds. Breathe slowly and deeply. You\'ve got this.',
+                gifFolder: 'coldshower'
             },
             {
                 name: 'Movement to Music',
-                duration: 10, // 10 seconds for testing
+                duration: 75, // 1 min 15 sec
                 iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
                 iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
                 color: 'phase-movement',
                 instructions: 'What song makes your spirit dance?',
-                guidance: 'Put on music that lifts your soul. Dance, stretch, sway - however feels good. You\'re waking up joy.'
+                guidance: 'Put on music that lifts your soul. Dance, stretch, sway - however feels good. You\'re waking up joy.',
+                gifFolder: 'dance'
             },
             {
                 name: 'Nourishing Fuel',
-                duration: 10, // 10 seconds for testing
+                duration: 300, // 5 minutes
                 iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>',
                 iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>',
                 color: 'phase-fuel',
                 instructions: 'What will nourish your body today?',
-                guidance: 'Prepare protein mindfully - eggs, yogurt, or a protein shake. This is self-care in action.'
+                guidance: 'Prepare protein mindfully - eggs, yogurt, or a protein shake. This is self-care in action.',
+                gifFolder: 'breakfast'
             },
             {
                 name: 'Gratitude',
-                duration: 10, // 10 seconds for testing
+                duration: 60, // 1 minute
                 iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
                 iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
                 color: 'phase-gratitude',
                 instructions: 'What fills your heart with warmth?',
-                guidance: 'Place your hand on your heart. Think of three things you appreciate. Feel that warmth.'
+                guidance: 'Place your hand on your heart. Think of three things you appreciate. Feel that warmth.',
+                gifFolder: 'thank you'
             },
             {
                 name: 'Intentions',
-                duration: 10, // 10 seconds for testing
+                duration: 60, // 1 minute
                 iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
                 iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
                 color: 'phase-intentions',
                 instructions: 'What would make today meaningful?',
-                guidance: 'Consider 1-3 things that matter most today. What would make you feel proud this evening?'
+                guidance: 'Consider 1-3 things that matter most today. What would make you feel proud this evening?',
+                gifFolder: 'intention'
             },
             {
                 name: 'Visualization',
-                duration: 10, // 10 seconds for testing
+                duration: 60, // 1 minute
                 iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
-                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
                 color: 'phase-visualization',
                 instructions: 'Can you see yourself moving through today with grace?',
-                guidance: 'Close your eyes. See yourself accomplishing your intentions with ease and confidence.'
+                guidance: 'Close your eyes. See yourself accomplishing your intentions with ease and confidence.',
+                gifFolder: 'vision'
             }
         ];
 
@@ -619,6 +668,7 @@
             updateDisplay();
             updatePhaseDots();
             initializeAudio();
+            loadPhaseGif(phases[0].gifFolder); // Load initial GIF
         }
 
         function updateDayCounter() {
@@ -804,21 +854,122 @@
             }, stepTime);
         }
 
-        // Giphy functions
-        async function fetchCelebrationGif() {
-            const celebrationTerms = [
-                'woman celebrating morning',
-                'peaceful morning meditation',
-                'morning achievement',
-                'mindful celebration',
-                'self care success'
-            ];
-            
+        // Local GIF loading functions
+        async function loadPhaseGif(folderName) {
             try {
-                const term = celebrationTerms[Math.floor(Math.random() * celebrationTerms.length)];
-                console.log('🎉 Fetching celebration GIF:', term);
+                console.log('🎯 Loading local GIF from folder:', folderName);
                 
-                const response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${encodeURIComponent(term)}&limit=1&rating=g`);
+                // Common GIF file extensions and patterns
+                const extensions = ['gif', 'webp', 'jpg', 'png'];
+                const commonNames = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 
+                                   'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+                
+                // Randomize which file to try first
+                const shuffledNames = [...commonNames].sort(() => Math.random() - 0.5);
+                const shuffledExts = [...extensions].sort(() => Math.random() - 0.5);
+                
+                // Try different combinations
+                for (const ext of shuffledExts) {
+                    for (const name of shuffledNames) {
+                        const url = `https://klossgott.github.io/morning-ritual-timer/gifs/${folderName}/${name}.${ext}`;
+                        
+                        try {
+                            // Test if file exists by creating image element
+                            const img = new Image();
+                            img.crossOrigin = 'anonymous';
+                            
+                            const loadPromise = new Promise((resolve, reject) => {
+                                img.onload = resolve;
+                                img.onerror = reject;
+                                setTimeout(reject, 2000); // 2 second timeout
+                            });
+                            
+                            img.src = url;
+                            await loadPromise;
+                            
+                            // If we get here, the image loaded successfully
+                            const gifContainer = document.getElementById('gifContainer');
+                            gifContainer.innerHTML = `<img src="${url}" alt="Phase animation" onload="console.log('✅ Local GIF loaded: ${url}')" onerror="console.log('❌ GIF failed to load')">`;
+                            console.log(`✅ Local GIF loaded: ${url}`);
+                            return;
+                            
+                        } catch (e) {
+                            // File doesn't exist, try next one
+                            continue;
+                        }
+                    }
+                }
+                
+                // If no local GIF found, fall back to icon
+                console.log(`❌ No local GIF found in folder: ${folderName}`);
+                showFallbackGif();
+                
+            } catch (error) {
+                console.error('Error loading local GIF:', error);
+                showFallbackGif();
+            }
+        }
+
+        // Load celebration GIF for completion
+        async function loadCelebrationGif() {
+            try {
+                console.log('🎉 Loading celebration GIF');
+                
+                const extensions = ['gif', 'webp', 'jpg', 'png'];
+                const commonNames = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 
+                                   'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+                
+                // Randomize selection
+                const shuffledNames = [...commonNames].sort(() => Math.random() - 0.5);
+                const shuffledExts = [...extensions].sort(() => Math.random() - 0.5);
+                
+                // Try different combinations for celebrate folder
+                for (const ext of shuffledExts) {
+                    for (const name of shuffledNames) {
+                        const url = `https://klossgott.github.io/morning-ritual-timer/gifs/celebrate/${name}.${ext}`;
+                        
+                        try {
+                            const img = new Image();
+                            img.crossOrigin = 'anonymous';
+                            
+                            const loadPromise = new Promise((resolve, reject) => {
+                                img.onload = resolve;
+                                img.onerror = reject;
+                                setTimeout(reject, 2000);
+                            });
+                            
+                            img.src = url;
+                            await loadPromise;
+                            
+                            // Add celebration GIF to completion screen
+                            const celebrationContainer = document.getElementById('celebrationContainer');
+                            celebrationContainer.innerHTML = `
+                                <div class="celebration-gif">
+                                    <img src="${url}" alt="Celebration" onload="console.log('🎉 Celebration GIF loaded')" onerror="console.log('🎉 Celebration GIF failed')">
+                                </div>
+                            `;
+                            
+                            console.log(`🎉 Celebration GIF loaded: ${url}`);
+                            return;
+                            
+                        } catch (e) {
+                            continue;
+                        }
+                    }
+                }
+                
+                console.log('❌ No celebration GIF found');
+                
+            } catch (error) {
+                console.error('Error loading celebration GIF:', error);
+            }
+        }
+
+        function showFallbackGif() {
+            const phase = phases[currentPhase];
+            const gifContainer = document.getElementById('gifContainer');
+            gifContainer.innerHTML = `<div class="fallback-emoji">${phase.iconSvg}</div>`;
+        } response = await fetch(`https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${encodeURIComponent(term)}&limit=1&rating=g`);
                 
                 if (!response.ok) throw new Error(`Giphy API error: ${response.status}`);
                 
@@ -965,8 +1116,11 @@
                 }
             }, 1000);
             
-            // Play guidance for current phase
+            // Load GIF for current phase
             const phase = phases[currentPhase];
+            loadPhaseGif(phase.gifFolder);
+            
+            // Play guidance for current phase
             const guidance = currentPhase === 0 
                 ? `Good morning. ${phase.instructions} ${phase.guidance}`
                 : `${phase.instructions} ${phase.guidance}`;
@@ -991,6 +1145,7 @@
             document.getElementById('app').style.display = 'block';
             document.getElementById('completion').style.display = 'none';
             updateDisplay();
+            loadPhaseGif(phases[0].gifFolder);
             console.log('🔄 Timer reset');
         }
 
@@ -1000,6 +1155,7 @@
             updateDisplay();
             
             const phase = phases[currentPhase];
+            loadPhaseGif(phase.gifFolder);
             playVoice(`${phase.instructions} ${phase.guidance}`);
             
             console.log('➡️ Moving to phase:', phase.name);
@@ -1010,6 +1166,7 @@
                 currentPhase = index;
                 timeLeft = phases[index].duration;
                 updateDisplay();
+                loadPhaseGif(phases[index].gifFolder);
                 console.log('🎯 Jumped to phase:', phases[index].name);
             }
         }
@@ -1029,8 +1186,8 @@
             const randomMessage = completionMessages[Math.floor(Math.random() * completionMessages.length)];
             document.getElementById('completionMessage').textContent = `${randomMessage} This is day ${dayCount} of your journey.`;
             
-            // Fetch celebration content
-            fetchCelebrationGif();
+            // Load celebration GIF
+            loadCelebrationGif();
             
             // Play completion message
             const completionAudio = `${randomMessage} This is day ${dayCount} of your 30-day journey.`;
