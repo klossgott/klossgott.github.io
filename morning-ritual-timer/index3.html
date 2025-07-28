@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<div<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -62,11 +62,6 @@
             justify-content: center;
         }
 
-        .phase-icon svg {
-            width: 24px;
-            height: 24px;
-        }
-
         .phase-title {
             font-size: 22px;
             font-weight: 300;
@@ -100,11 +95,6 @@
             align-items: center;
             justify-content: center;
             font-size: 16px;
-        }
-
-        .audio-btn svg {
-            width: 16px;
-            height: 16px;
         }
 
         .audio-btn:hover {
@@ -298,11 +288,6 @@
             justify-content: center;
         }
 
-        .phase-dot-icon svg {
-            width: 12px;
-            height: 12px;
-        }
-
         /* Completed phase styling */
         .phase-dot.completed .phase-dot-icon {
             color: #22c55e; /* Green tick */
@@ -376,9 +361,7 @@
         <!-- Header -->
         <div class="header">
             <div class="phase-info">
-                <div class="phase-icon" id="phaseIcon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-                </div>
+                <div class="phase-icon" id="phaseIcon">☀️</div>
                 <div>
                     <h1 class="phase-title" id="phaseTitle">Light & Hydration</h1>
                     <p class="phase-step" id="phaseStep">Step 1 of 7</p>
@@ -417,7 +400,11 @@
                 <button class="control-btn" onclick="pauseTimer()" id="pauseBtn" style="display:none">
                     ⏸️ Pause
                 </button>
-                <button class="control-btn" onclick="resetTimer()">
+            </div>
+
+            <!-- Reset button below -->
+            <div style="text-align: center; margin-bottom: 24px;">
+                <button onclick="resetTimer()" style="background: rgba(255,255,255,0.2); border: none; border-radius: 20px; padding: 8px 16px; color: #6b7280; font-size: 12px; cursor: pointer;">
                     🔄 Reset
                 </button>
             </div>
@@ -450,14 +437,15 @@
 
         <!-- Completion Screen -->
         <div class="completion" id="completion" style="display:none;">
-            <div class="completion-emoji">🌅</div>
             <h2 class="completion-title">Well done!</h2>
             <div class="completion-message">
                 You've completed your morning ritual. You chose to begin. That's everything.
             </div>
-            <button class="control-btn" onclick="resetForTomorrow()">
-                Tomorrow Awaits
-            </button>
+            <div style="display: flex; justify-content: center;">
+                <button class="control-btn" onclick="resetForTomorrow()">
+                    Tomorrow Awaits
+                </button>
+            </div>
         </div>
 
         <!-- Hidden Voice Audio -->
@@ -483,9 +471,8 @@
         const phases = [
             {
                 name: 'Light & Hydration',
-                duration: 10,
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
-                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
+                duration: 600, // 10 minutes - correct timing
+                icon: '☀️',
                 color: 'phase-light',
                 instructions: 'Let the morning light find you.',
                 guidance: 'Step outside or open those curtains. Let the light touch your face. Sip some water slowly - maybe with a pinch of salt or lemon. This is your sacred time for light, water, and gentle presence.',
@@ -493,9 +480,8 @@
             },
             {
                 name: 'Cool Refresh',
-                duration: 5,
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2.04 4.6 4.14 5.93a10.94 10.94 0 0 0 1.26 3.23"/><path d="M17.13 4.9c.84.8 1.6 1.76 2.23 2.84-.51.29-1.03.56-1.47.93-.44.37-.77.82-.92 1.35"/></svg>',
-                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2.04 4.6 4.14 5.93a10.94 10.94 0 0 0 1.26 3.23"/><path d="M17.13 4.9c.84.8 1.6 1.76 2.23 2.84-.51.29-1.03.56-1.47.93-.44.37-.77.82-.92 1.35"/></svg>',
+                duration: 30, // 30 seconds - correct timing
+                icon: '🚿',
                 color: 'phase-cool',
                 instructions: 'Here comes your moment of gentle courage.',
                 guidance: 'At the end of your warm shower, turn the water cool for just 30 seconds. Breathe slowly and deeply. You\'ve got this.',
@@ -503,9 +489,8 @@
             },
             {
                 name: 'Movement to Music',
-                duration: 10,
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
-                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+                duration: 180, // 3 minutes - correct timing
+                icon: '🎵',
                 color: 'phase-movement',
                 instructions: 'What song makes your spirit dance?',
                 guidance: 'Put on music that lifts your soul. Dance, stretch, sway - however feels good. You\'re waking up joy.',
@@ -513,9 +498,8 @@
             },
             {
                 name: 'Nourishing Fuel',
-                duration: 10,
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>',
-                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>',
+                duration: 600, // 10 minutes - correct timing
+                icon: '☕',
                 color: 'phase-fuel',
                 instructions: 'What will nourish your body today?',
                 guidance: 'Prepare protein mindfully - eggs, yogurt, or a protein shake. This is self-care in action.',
@@ -523,9 +507,8 @@
             },
             {
                 name: 'Gratitude',
-                duration: 10,
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
-                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+                duration: 180, // 3 minutes - correct timing
+                icon: '❤️',
                 color: 'phase-gratitude',
                 instructions: 'What fills your heart with warmth?',
                 guidance: 'Place your hand on your heart. Think of three things you appreciate. Feel that warmth.',
@@ -533,9 +516,8 @@
             },
             {
                 name: 'Intentions',
-                duration: 10,
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
-                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+                duration: 180, // 3 minutes - correct timing
+                icon: '🎯',
                 color: 'phase-intentions',
                 instructions: 'What would make today meaningful?',
                 guidance: 'Consider 1-3 things that matter most today. What would make you feel proud this evening?',
@@ -543,9 +525,8 @@
             },
             {
                 name: 'Visualization',
-                duration: 10,
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
-                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+                duration: 180, // 3 minutes - correct timing
+                icon: '👁️',
                 color: 'phase-visualization',
                 instructions: 'Can you see yourself moving through today with grace?',
                 guidance: 'Close your eyes. See yourself accomplishing your intentions with ease and confidence.',
@@ -649,7 +630,7 @@
         function showFallbackGif() {
             const phase = phases[currentPhase];
             const gifContainer = document.getElementById('gifContainer');
-            gifContainer.innerHTML = `<div class="fallback-emoji">${phase.iconSvg}</div>`;
+            gifContainer.innerHTML = `<div class="fallback-emoji">${phase.icon}</div>`;
         }
 
         async function playVoice(text) {
@@ -752,10 +733,8 @@
             // Update colors and content
             container.className = `timer-container ${phase.color}`;
             
-            // Update phase icon with direct SVG
-            const phaseIconEl = document.getElementById('phaseIcon');
-            phaseIconEl.innerHTML = phase.iconSvg;
-            
+            // Update phase icon with emoji
+            document.getElementById('phaseIcon').textContent = phase.icon;
             document.getElementById('phaseTitle').textContent = phase.name;
             document.getElementById('phaseStep').textContent = `Step ${currentPhase + 1} of ${phases.length}`;
             document.getElementById('guidanceTitle').textContent = phase.instructions;
@@ -781,9 +760,6 @@
             const dotsContainer = document.getElementById('phaseDots');
             dotsContainer.innerHTML = '';
             
-            // Check SVG for completed phases
-            const checkSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>';
-            
             phases.forEach((phase, index) => {
                 const dot = document.createElement('button');
                 dot.className = 'phase-dot';
@@ -792,10 +768,10 @@
                 dot.onclick = () => goToPhase(index);
                 
                 // Show tick for completed phases, original icon for others
-                const iconHtml = index < currentPhase ? checkSvg : phase.iconSvgSmall;
+                const iconDisplay = index < currentPhase ? '✅' : phase.icon;
                 
                 dot.innerHTML = `
-                    <div class="phase-dot-icon">${iconHtml}</div>
+                    <div class="phase-dot-icon">${iconDisplay}</div>
                     <div class="phase-dot-number">${index + 1}</div>
                 `;
                 dotsContainer.appendChild(dot);
