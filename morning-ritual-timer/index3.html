@@ -1,11 +1,21 @@
-<div<!DOCTYPE html>
+// Load curated local GIFs instead of Giphy API
+        async function fetchLocalGif(gifFolder) {
+            try {
+                console.log('🎯 Loading local GIF from folder:', gifFolder);
+                
+                // For now, we'll use a placeholder                    <div class="audio-controls">
+                        <button class="audio-btn enabled" id="voiceBtn" onclick="toggleVoice()" title="Voice guidance">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                        </button>
+                        <button class="audio-btn enabled" id="musicBtn" onclick="toggleMusic()" title="Background music">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                        </button>
+                    </div>                    <div<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Morning Ritual Timer</title>
-    <!-- Feather Icons -->
-    <script src="https://unpkg.com/feather-icons"></script>
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
@@ -60,6 +70,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .phase-icon svg {
+            width: 24px;
+            height: 24px;
         }
 
         .phase-title {
@@ -288,6 +303,11 @@
             justify-content: center;
         }
 
+        .phase-dot-icon svg {
+            width: 12px;
+            height: 12px;
+        }
+
         /* Completed phase styling */
         .phase-dot.completed .phase-dot-icon {
             color: #22c55e; /* Green tick */
@@ -361,7 +381,9 @@
         <!-- Header -->
         <div class="header">
             <div class="phase-info">
-                <div class="phase-icon" id="phaseIcon">☀️</div>
+                <div class="phase-icon" id="phaseIcon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </div>
                 <div>
                     <h1 class="phase-title" id="phaseTitle">Light & Hydration</h1>
                     <p class="phase-step" id="phaseStep">Step 1 of 7</p>
@@ -471,66 +493,73 @@
         const phases = [
             {
                 name: 'Light & Hydration',
-                duration: 600, // 10 minutes - correct timing
-                icon: '☀️',
+                duration: 600, // 10 minutes
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
                 color: 'phase-light',
                 instructions: 'Let the morning light find you.',
                 guidance: 'Step outside or open those curtains. Let the light touch your face. Sip some water slowly - maybe with a pinch of salt or lemon. This is your sacred time for light, water, and gentle presence.',
-                stickerTags: ['sunrise', 'morning light', 'sunshine', 'golden hour', 'dawn', 'daybreak', 'morning glow', 'bright sun', 'morning rays', 'sunbeam', 'early morning', 'morning sky', 'radiant sun', 'sunny morning', 'light therapy', 'vitamin d', 'morning warmth', 'sun exposure', 'natural light', 'awakening']
+                gifFolder: 'sunshine'
             },
             {
                 name: 'Cool Refresh',
-                duration: 30, // 30 seconds - correct timing
-                icon: '🚿',
+                duration: 30, // 30 seconds
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2.04 4.6 4.14 5.93a10.94 10.94 0 0 0 1.26 3.23"/><path d="M17.13 4.9c.84.8 1.6 1.76 2.23 2.84-.51.29-1.03.56-1.47.93-.44.37-.77.82-.92 1.35"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2.04 4.6 4.14 5.93a10.94 10.94 0 0 0 1.26 3.23"/><path d="M17.13 4.9c.84.8 1.6 1.76 2.23 2.84-.51.29-1.03.56-1.47.93-.44.37-.77.82-.92 1.35"/></svg>',
                 color: 'phase-cool',
                 instructions: 'Here comes your moment of gentle courage.',
                 guidance: 'At the end of your warm shower, turn the water cool for just 30 seconds. Breathe slowly and deeply. You\'ve got this.',
-                stickerTags: ['cold shower', 'refreshing', 'water drops', 'splash', 'cool water', 'invigorate', 'wake up', 'fresh', 'energizing', 'revitalizing', 'shower', 'water therapy', 'cold plunge', 'ice bath', 'cooling', 'rejuvenating', 'crisp', 'awakening', 'stimulating', 'bracing']
+                gifFolder: 'coldshower'
             },
             {
                 name: 'Movement to Music',
-                duration: 180, // 3 minutes - correct timing
-                icon: '🎵',
+                duration: 75, // 75 seconds (1 min 15 sec)
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
                 color: 'phase-movement',
                 instructions: 'What song makes your spirit dance?',
                 guidance: 'Put on music that lifts your soul. Dance, stretch, sway - however feels good. You\'re waking up joy.',
-                stickerTags: ['dancing', 'movement', 'exercise', 'stretching', 'yoga', 'fitness', 'active', 'energetic', 'motion', 'groove', 'rhythm', 'body movement', 'dance party', 'workout', 'flexibility', 'morning exercise', 'kinetic', 'dynamic', 'flowing', 'expressive']
+                gifFolder: 'dance'
             },
             {
                 name: 'Nourishing Fuel',
-                duration: 600, // 10 minutes - correct timing
-                icon: '☕',
+                duration: 300, // 5 minutes
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>',
                 color: 'phase-fuel',
                 instructions: 'What will nourish your body today?',
                 guidance: 'Prepare protein mindfully - eggs, yogurt, or a protein shake. This is self-care in action.',
-                stickerTags: ['healthy breakfast', 'nutrition', 'protein', 'nourishing', 'wholesome', 'fresh food', 'healthy eating', 'fuel', 'energy food', 'breakfast', 'organic', 'nutrients', 'vitamins', 'superfood', 'clean eating', 'mindful eating', 'balanced meal', 'wellness food', 'nutritious', 'sustenance']
+                gifFolder: 'breakfast'
             },
             {
                 name: 'Gratitude',
-                duration: 180, // 3 minutes - correct timing
-                icon: '❤️',
+                duration: 60, // 1 minute
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
                 color: 'phase-gratitude',
                 instructions: 'What fills your heart with warmth?',
                 guidance: 'Place your hand on your heart. Think of three things you appreciate. Feel that warmth.',
-                stickerTags: ['gratitude', 'thankful', 'appreciation', 'blessed', 'grateful heart', 'mindfulness', 'positive thinking', 'counting blessings', 'thankfulness', 'appreciation practice', 'mindful gratitude', 'heart centered', 'emotional wellness', 'positive mindset', 'inner peace', 'contentment', 'joy', 'happiness', 'loving kindness', 'abundance']
+                gifFolder: 'thank you'
             },
             {
                 name: 'Intentions',
-                duration: 180, // 3 minutes - correct timing
-                icon: '🎯',
+                duration: 60, // 1 minute
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
                 color: 'phase-intentions',
                 instructions: 'What would make today meaningful?',
                 guidance: 'Consider 1-3 things that matter most today. What would make you feel proud this evening?',
-                stickerTags: ['goal setting', 'intention', 'focus', 'purpose', 'planning', 'vision', 'clarity', 'direction', 'mindful planning', 'daily goals', 'motivation', 'ambition', 'determination', 'commitment', 'aspiration', 'objective', 'mission', 'target', 'aim', 'resolution']
+                gifFolder: 'intention'
             },
             {
                 name: 'Visualization',
-                duration: 180, // 3 minutes - correct timing
-                icon: '👁️',
+                duration: 60, // 1 minute
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
                 color: 'phase-visualization',
                 instructions: 'Can you see yourself moving through today with grace?',
                 guidance: 'Close your eyes. See yourself accomplishing your intentions with ease and confidence.',
-                stickerTags: ['vision', 'success', 'achievement', 'visualization', 'manifestation', 'dreams', 'accomplishment', 'victory', 'triumph', 'winning', 'mental imagery', 'positive visualization', 'goal achievement', 'success mindset', 'confidence', 'empowerment', 'self-belief', 'mental rehearsal', 'future self', 'potential']
+                gifFolder: 'vision'
             }
         ];
 
@@ -565,72 +594,77 @@
             }, stepTime);
         }
 
-        async function fetchSticker(tags) {
+        // Load curated local GIFs instead of Giphy API
+        async function fetchLocalGif(gifFolder) {
             try {
-                const randomTag = tags[Math.floor(Math.random() * tags.length)];
-                console.log('🎯 Fetching sticker for:', randomTag);
+                console.log('🎯 Loading local GIF from folder:', gifFolder);
                 
-                const res = await fetch(
-                    `https://api.giphy.com/v1/stickers/search?api_key=${GIPHY_API_KEY}&q=${encodeURIComponent(randomTag)}&limit=20&rating=pg`
-                );
+                // List of common GIF file names to try
+                const possibleGifs = ['1.gif', '2.gif', '3.gif', '4.gif', '5.gif', '01.gif', '02.gif', '03.gif', '04.gif', '05.gif'];
                 
-                if (res.ok) {
-                    const json = await res.json();
-                    if (json.data?.length) {
-                        const idx = Math.floor(Math.random() * json.data.length);
-                        const gifContainer = document.getElementById('gifContainer');
-                        gifContainer.innerHTML = `<img src="${json.data[idx].images.fixed_height.url}" alt="Phase sticker">`;
-                        console.log('✨ Sticker loaded successfully');
-                        return;
-                    }
-                }
+                // Randomly select a GIF to try
+                const randomGif = possibleGifs[Math.floor(Math.random() * possibleGifs.length)];
+                const gifPath = `./gifs/${gifFolder}/${randomGif}`;
                 
-                showFallbackGif();
+                console.log('🎯 Trying to load:', gifPath);
+                
+                // Test if the GIF exists by creating an image element
+                const img = new Image();
+                img.onload = () => {
+                    const gifContainer = document.getElementById('gifContainer');
+                    gifContainer.innerHTML = `<img src="${gifPath}" alt="Phase animation" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 12px;">`;
+                    console.log('✨ Local GIF loaded successfully:', gifPath);
+                };
+                img.onerror = () => {
+                    console.log('🎯 GIF not found:', gifPath, '- trying another...');
+                    // Try a different GIF or use fallback
+                    tryNextGif(gifFolder, possibleGifs.filter(g => g !== randomGif));
+                };
+                img.src = gifPath;
+                
             } catch (e) {
-                console.error('Sticker error', e);
+                console.error('🎯 Local GIF error:', e);
                 showFallbackGif();
             }
         }
 
-        // CELEBRATION GIFS for completion
+        function tryNextGif(gifFolder, remainingGifs) {
+            if (remainingGifs.length === 0) {
+                console.log('🎯 No GIFs found in folder, using fallback');
+                showFallbackGif();
+                return;
+            }
+            
+            const nextGif = remainingGifs[0];
+            const gifPath = `./gifs/${gifFolder}/${nextGif}`;
+            
+            const img = new Image();
+            img.onload = () => {
+                const gifContainer = document.getElementById('gifContainer');
+                gifContainer.innerHTML = `<img src="${gifPath}" alt="Phase animation" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 12px;">`;
+                console.log('✨ Local GIF loaded successfully:', gifPath);
+            };
+            img.onerror = () => {
+                tryNextGif(gifFolder, remainingGifs.slice(1));
+            };
+            img.src = gifPath;
+        }
+
+        // CELEBRATION GIFS for completion - use 'celebrate' folder
         async function fetchCelebrationGif() {
             try {
-                const celebrationTags = ['celebration', 'success', 'victory', 'achievement', 'congratulations', 'well done', 'accomplished', 'winner', 'morning success', 'ritual complete'];
-                const randomTag = celebrationTags[Math.floor(Math.random() * celebrationTags.length)];
-                console.log('🎉 Fetching celebration GIF for:', randomTag);
-                
-                const res = await fetch(
-                    `https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${encodeURIComponent(randomTag)}&limit=20&rating=pg`
-                );
-                
-                if (res.ok) {
-                    const json = await res.json();
-                    if (json.data?.length) {
-                        const idx = Math.floor(Math.random() * json.data.length);
-                        // Add celebration GIF to completion screen
-                        const completionDiv = document.getElementById('completion');
-                        const existingGif = completionDiv.querySelector('.celebration-gif');
-                        if (existingGif) existingGif.remove();
-                        
-                        const gifDiv = document.createElement('div');
-                        gifDiv.className = 'celebration-gif';
-                        gifDiv.style.cssText = 'margin: 20px 0; max-width: 200px; margin-left: auto; margin-right: auto;';
-                        gifDiv.innerHTML = `<img src="${json.data[idx].images.fixed_height.url}" alt="Celebration" style="max-width: 100%; border-radius: 12px;">`;
-                        
-                        completionDiv.insertBefore(gifDiv, completionDiv.querySelector('.completion-title'));
-                        console.log('🎉 Celebration GIF loaded successfully');
-                        return;
-                    }
-                }
+                console.log('🎉 Loading celebration GIF from celebrate folder');
+                fetchLocalGif('celebrate');
             } catch (e) {
-                console.error('🎉 Celebration GIF error', e);
+                console.error('🎉 Celebration GIF error:', e);
+                showFallbackGif();
             }
         }
 
         function showFallbackGif() {
             const phase = phases[currentPhase];
             const gifContainer = document.getElementById('gifContainer');
-            gifContainer.innerHTML = `<div class="fallback-emoji">${phase.icon}</div>`;
+            gifContainer.innerHTML = `<div class="fallback-emoji">${phase.iconSvg}</div>`;
         }
 
         async function playVoice(text) {
@@ -678,21 +712,6 @@
             btn.innerHTML = voiceEnabled ? volumeOnSvg : volumeOffSvg;
         }
 
-        function toggleMusic() {
-            musicEnabled = !musicEnabled;
-            const btn = document.getElementById('musicBtn');
-            const player = musicPlayer;
-            
-            btn.style.opacity = musicEnabled ? '1' : '0.4';
-            btn.className = musicEnabled ? 'audio-btn enabled' : 'audio-btn';
-            
-            if (musicEnabled && player) {
-                if (player.paused) player.play().catch(console.error);
-            } else if (player) {
-                player.pause();
-            }
-        }
-
         function initializeMusic() {
             const player = musicPlayer;
             if (player && musicEnabled) {
@@ -733,8 +752,10 @@
             // Update colors and content
             container.className = `timer-container ${phase.color}`;
             
-            // Update phase icon with emoji
-            document.getElementById('phaseIcon').textContent = phase.icon;
+            // Update phase icon with SVG
+            const phaseIconEl = document.getElementById('phaseIcon');
+            phaseIconEl.innerHTML = phase.iconSvg;
+            
             document.getElementById('phaseTitle').textContent = phase.name;
             document.getElementById('phaseStep').textContent = `Step ${currentPhase + 1} of ${phases.length}`;
             document.getElementById('guidanceTitle').textContent = phase.instructions;
@@ -760,6 +781,9 @@
             const dotsContainer = document.getElementById('phaseDots');
             dotsContainer.innerHTML = '';
             
+            // Check SVG for completed phases
+            const checkSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>';
+            
             phases.forEach((phase, index) => {
                 const dot = document.createElement('button');
                 dot.className = 'phase-dot';
@@ -768,10 +792,10 @@
                 dot.onclick = () => goToPhase(index);
                 
                 // Show tick for completed phases, original icon for others
-                const iconDisplay = index < currentPhase ? '✅' : phase.icon;
+                const iconHtml = index < currentPhase ? checkSvg : phase.iconSvgSmall;
                 
                 dot.innerHTML = `
-                    <div class="phase-dot-icon">${iconDisplay}</div>
+                    <div class="phase-dot-icon">${iconHtml}</div>
                     <div class="phase-dot-number">${index + 1}</div>
                 `;
                 dotsContainer.appendChild(dot);
@@ -817,7 +841,7 @@
             document.getElementById('app').style.display = 'block';
             document.getElementById('completion').style.display = 'none';
             updateDisplay();
-            fetchSticker(phases[0].stickerTags);
+            fetchLocalGif(phases[0].gifFolder);
         }
 
         function nextPhase() {
@@ -825,7 +849,7 @@
             timeLeft = phases[currentPhase].duration;
             updateDisplay();
             const phase = phases[currentPhase];
-            fetchSticker(phase.stickerTags);
+            fetchLocalGif(phase.gifFolder);
             playVoice(phase.guidance);
         }
 
@@ -834,7 +858,7 @@
                 currentPhase = index;
                 timeLeft = phases[index].duration;
                 updateDisplay();
-                fetchSticker(phases[index].stickerTags);
+                fetchLocalGif(phases[index].gifFolder);
             }
         }
 
@@ -843,7 +867,7 @@
             document.getElementById('app').style.display = 'none';
             document.getElementById('completion').style.display = 'block';
             
-            // Load celebration GIF
+            // Load celebration GIF from 'celebrate' folder
             fetchCelebrationGif();
             
             playVoice('Well done, you completed your morning ritual!');
@@ -857,7 +881,7 @@
         window.onload = function() {
             initializeMusic();
             updateDisplay();
-            fetchSticker(phases[currentPhase].stickerTags);
+            fetchLocalGif(phases[currentPhase].gifFolder);
             
             console.log('Beautiful Morning Ritual Timer loaded! 🌅');
         };
