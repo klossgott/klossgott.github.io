@@ -376,20 +376,13 @@
         <!-- Header -->
         <div class="header">
             <div class="phase-info">
-                <div class="phase-icon" id="phaseIcon">☀️</div>
+                <div class="phase-icon" id="phaseIcon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </div>
                 <div>
                     <h1 class="phase-title" id="phaseTitle">Light & Hydration</h1>
                     <p class="phase-step" id="phaseStep">Step 1 of 7</p>
                 </div>
-            </div>
-            
-            <div class="audio-controls">
-                <button class="audio-btn enabled" id="voiceBtn" onclick="toggleVoice()" title="Voice guidance">
-                    🎤
-                </button>
-                <button class="audio-btn enabled" id="musicBtn" onclick="toggleMusic()" title="Background music">
-                    🎵
-                </button>
             </div>
         </div>
 
@@ -435,8 +428,22 @@
                 <div class="phase-dots" id="phaseDots"></div>
             </div>
 
-            <!-- Music Player -->
+            <!-- Music Player with audio controls at bottom -->
             <div class="music-player">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                    <button onclick="changeTrack()" style="background: rgba(255,255,255,0.2); border: none; border-radius: 12px; padding: 4px 8px; color: #6b7280; font-size: 11px; cursor: pointer;">
+                        🔀
+                    </button>
+                    
+                    <div class="audio-controls">
+                        <button class="audio-btn enabled" id="voiceBtn" onclick="toggleVoice()" title="Voice guidance">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                        </button>
+                        <button class="audio-btn enabled" id="musicBtn" onclick="toggleMusic()" title="Background music">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+                        </button>
+                    </div>
+                </div>
                 <audio id="musicPlayer" controls></audio>
             </div>
         </div>
@@ -477,7 +484,8 @@
             {
                 name: 'Light & Hydration',
                 duration: 10,
-                icon: 'sun',
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
                 color: 'phase-light',
                 instructions: 'Let the morning light find you.',
                 guidance: 'Step outside or open those curtains. Let the light touch your face. Sip some water slowly - maybe with a pinch of salt or lemon. This is your sacred time for light, water, and gentle presence.',
@@ -486,7 +494,8 @@
             {
                 name: 'Cool Refresh',
                 duration: 5,
-                icon: 'droplets',
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2.04 4.6 4.14 5.93a10.94 10.94 0 0 0 1.26 3.23"/><path d="M17.13 4.9c.84.8 1.6 1.76 2.23 2.84-.51.29-1.03.56-1.47.93-.44.37-.77.82-.92 1.35"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2.04 4.6 4.14 5.93a10.94 10.94 0 0 0 1.26 3.23"/><path d="M17.13 4.9c.84.8 1.6 1.76 2.23 2.84-.51.29-1.03.56-1.47.93-.44.37-.77.82-.92 1.35"/></svg>',
                 color: 'phase-cool',
                 instructions: 'Here comes your moment of gentle courage.',
                 guidance: 'At the end of your warm shower, turn the water cool for just 30 seconds. Breathe slowly and deeply. You\'ve got this.',
@@ -495,7 +504,8 @@
             {
                 name: 'Movement to Music',
                 duration: 10,
-                icon: 'music',
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
                 color: 'phase-movement',
                 instructions: 'What song makes your spirit dance?',
                 guidance: 'Put on music that lifts your soul. Dance, stretch, sway - however feels good. You\'re waking up joy.',
@@ -504,7 +514,8 @@
             {
                 name: 'Nourishing Fuel',
                 duration: 10,
-                icon: 'coffee',
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>',
                 color: 'phase-fuel',
                 instructions: 'What will nourish your body today?',
                 guidance: 'Prepare protein mindfully - eggs, yogurt, or a protein shake. This is self-care in action.',
@@ -513,7 +524,8 @@
             {
                 name: 'Gratitude',
                 duration: 10,
-                icon: 'heart',
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
                 color: 'phase-gratitude',
                 instructions: 'What fills your heart with warmth?',
                 guidance: 'Place your hand on your heart. Think of three things you appreciate. Feel that warmth.',
@@ -522,16 +534,18 @@
             {
                 name: 'Intentions',
                 duration: 10,
-                icon: 'target',
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
                 color: 'phase-intentions',
                 instructions: 'What would make today meaningful?',
-                guidance: 'Consider 1-3 things that matter most today. what would make you feel proud this evening?',
+                guidance: 'Consider 1-3 things that matter most today. What would make you feel proud this evening?',
                 stickerTags: ['goal setting', 'intention', 'focus', 'purpose', 'planning', 'vision', 'clarity', 'direction', 'mindful planning', 'daily goals', 'motivation', 'ambition', 'determination', 'commitment', 'aspiration', 'objective', 'mission', 'target', 'aim', 'resolution']
             },
             {
                 name: 'Visualization',
                 duration: 10,
-                icon: 'eye',
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
                 color: 'phase-visualization',
                 instructions: 'Can you see yourself moving through today with grace?',
                 guidance: 'Close your eyes. See yourself accomplishing your intentions with ease and confidence.',
@@ -635,7 +649,7 @@
         function showFallbackGif() {
             const phase = phases[currentPhase];
             const gifContainer = document.getElementById('gifContainer');
-            gifContainer.innerHTML = `<div class="fallback-emoji">${phase.icon}</div>`;
+            gifContainer.innerHTML = `<div class="fallback-emoji">${phase.iconSvg}</div>`;
         }
 
         async function playVoice(text) {
@@ -675,6 +689,12 @@
             const btn = document.getElementById('voiceBtn');
             btn.style.opacity = voiceEnabled ? '1' : '0.4';
             btn.className = voiceEnabled ? 'audio-btn enabled' : 'audio-btn';
+            
+            // Update icon - volume-2 when on, volume-x when off
+            const volumeOnSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+            const volumeOffSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M23 9l-6 6M17 9l6 6"/></svg>';
+            
+            btn.innerHTML = voiceEnabled ? volumeOnSvg : volumeOffSvg;
         }
 
         function toggleMusic() {
@@ -695,11 +715,33 @@
         function initializeMusic() {
             const player = musicPlayer;
             if (player && musicEnabled) {
+                // RANDOMIZE music selection each time
                 const idx = Math.floor(Math.random() * audioFiles.length);
                 player.src = audioFiles[idx];
                 player.volume = 0.2;
                 player.loop = true;
+                
+                console.log(`🎵 Random music selected: ${audioFiles[idx]}`);
+                
                 player.play().catch(() => console.log('Autoplay blocked'));
+            }
+        }
+
+        // Function to change to random track
+        function changeTrack() {
+            const player = musicPlayer;
+            if (player && musicEnabled) {
+                const idx = Math.floor(Math.random() * audioFiles.length);
+                const wasPlaying = !player.paused;
+                
+                player.src = audioFiles[idx];
+                player.volume = 0.2;
+                
+                if (wasPlaying) {
+                    player.play().catch(console.error);
+                }
+                
+                console.log(`🎵 Changed to random track: ${audioFiles[idx]}`);
             }
         }
 
@@ -709,7 +751,11 @@
             
             // Update colors and content
             container.className = `timer-container ${phase.color}`;
-            document.getElementById('phaseIcon').textContent = phase.icon;
+            
+            // Update phase icon with direct SVG
+            const phaseIconEl = document.getElementById('phaseIcon');
+            phaseIconEl.innerHTML = phase.iconSvg;
+            
             document.getElementById('phaseTitle').textContent = phase.name;
             document.getElementById('phaseStep').textContent = `Step ${currentPhase + 1} of ${phases.length}`;
             document.getElementById('guidanceTitle').textContent = phase.instructions;
@@ -734,14 +780,22 @@
         function updatePhaseDots() {
             const dotsContainer = document.getElementById('phaseDots');
             dotsContainer.innerHTML = '';
+            
+            // Check SVG for completed phases
+            const checkSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20,6 9,17 4,12"/></svg>';
+            
             phases.forEach((phase, index) => {
                 const dot = document.createElement('button');
                 dot.className = 'phase-dot';
                 if (index === currentPhase) dot.classList.add('active');
                 if (index < currentPhase) dot.classList.add('completed');
                 dot.onclick = () => goToPhase(index);
+                
+                // Show tick for completed phases, original icon for others
+                const iconHtml = index < currentPhase ? checkSvg : phase.iconSvgSmall;
+                
                 dot.innerHTML = `
-                    <div class="phase-dot-icon">${phase.icon}</div>
+                    <div class="phase-dot-icon">${iconHtml}</div>
                     <div class="phase-dot-number">${index + 1}</div>
                 `;
                 dotsContainer.appendChild(dot);
@@ -828,6 +882,7 @@
             initializeMusic();
             updateDisplay();
             fetchSticker(phases[currentPhase].stickerTags);
+            
             console.log('Beautiful Morning Ritual Timer loaded! 🌅');
         };
     </script>
