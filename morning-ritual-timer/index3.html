@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Morning Ritual Timer</title>
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
     <style>
         body {
             font-family: system-ui, -apple-system, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             margin: 0;
-            padding: 20px;
+            padding: 16px;
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -17,12 +19,12 @@
         }
 
         .timer-container {
-            max-width: 400px;
+            max-width: 380px;
             width: 100%;
-            border-radius: 24px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            transition: all 1000ms ease-in-out;
+            box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25);
+            transition: background-color 1000ms ease-in-out;
         }
 
         /* Dynamic phase colors - RESTORED */
@@ -34,12 +36,12 @@
         .phase-intentions { background-color: #dbeafe; }
         .phase-visualization { background-color: #ccfbf1; }
 
-        /* Header with glassmorphism */
+        /* Header with glassmorphism - MORE COMPACT */
         .header {
             background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
             color: #374151;
-            padding: 24px;
+            padding: 20px;
             text-align: center;
         }
 
@@ -47,53 +49,72 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 10px;
+            margin-bottom: 10px;
         }
 
         .phase-icon {
-            font-size: 32px;
+            font-size: 28px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .phase-icon svg {
+            width: 24px;
+            height: 24px;
         }
 
         .phase-title {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 300;
             margin: 0;
         }
 
         .phase-step {
-            font-size: 14px;
-            opacity: 80%;
+            font-size: 13px;
+            opacity: 70%;
             margin: 0;
         }
 
         .audio-controls {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             justify-content: center;
-            margin-top: 16px;
+            margin-top: 12px;
         }
 
+        /* NEUTRAL ICON BUTTONS */
         .audio-btn {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             border: none;
-            border-radius: 20px;
-            padding: 8px 16px;
-            color: #374151;
-            font-size: 12px;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            color: #6b7280;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 4px;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .audio-btn svg {
+            width: 16px;
+            height: 16px;
         }
 
         .audio-btn:hover {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
         }
 
         .audio-btn.enabled {
-            background: rgba(34, 197, 94, 0.3);
+            background: rgba(255, 255, 255, 0.2);
+            color: #374151;
         }
 
         /* Progress bar */
@@ -108,19 +129,19 @@
             transition: width 1000ms ease-out;
         }
 
-        /* Main content */
+        /* Main content - MORE COMPACT */
         .content {
-            padding: 32px 24px;
+            padding: 24px 20px;
             text-align: center;
         }
 
         /* GIF Container - TRANSPARENT with smaller size */
         .gif-container {
-            height: 160px;
+            height: 140px;
             width: 100%;
-            max-width: 280px;
-            margin: 0 auto 24px;
-            border-radius: 16px;
+            max-width: 240px;
+            margin: 0 auto 20px;
+            border-radius: 12px;
             overflow: hidden;
             background: transparent;
             display: flex;
@@ -151,103 +172,103 @@
             50% { transform: scale(1.05); opacity: 0.9; }
         }
 
-        /* Timer display */
+        /* Timer display - MORE COMPACT */
         .timer-display {
-            font-size: 56px;
+            font-size: 48px;
             font-weight: 100;
             font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
             color: #374151;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
             letter-spacing: 2px;
         }
 
-        /* Guidance box */
+        /* Guidance box - MORE COMPACT */
         .guidance-box {
             background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 32px;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
         }
 
         .guidance-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 500;
             color: #374151;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .guidance-text {
             color: #6b7280;
-            line-height: 1.6;
-            font-size: 14px;
+            line-height: 1.5;
+            font-size: 13px;
         }
 
-        /* Controls */
+        /* Controls - MORE COMPACT */
         .controls {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             justify-content: center;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .control-btn {
-            background: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.4);
             border: none;
-            border-radius: 50px;
-            padding: 16px 32px;
+            border-radius: 40px;
+            padding: 12px 24px;
             color: #374151;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            gap: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .control-btn:hover {
-            background: rgba(255, 255, 255, 0.7);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.6);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
         .control-btn:active {
             transform: translateY(0);
         }
 
-        /* Phase navigation */
+        /* Phase navigation - MORE COMPACT */
         .phase-nav {
             border-top: 1px solid rgba(255, 255, 255, 0.2);
-            padding-top: 24px;
+            padding-top: 16px;
         }
 
         .phase-nav-title {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 500;
             color: #6b7280;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .phase-dots {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
+            gap: 6px;
         }
 
         .phase-dot {
             background: rgba(255, 255, 255, 0.2);
             border: none;
-            border-radius: 16px;
-            padding: 12px 8px;
+            border-radius: 12px;
+            padding: 8px 4px;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            font-size: 12px;
+            gap: 2px;
+            font-size: 10px;
             color: #6b7280;
         }
 
@@ -258,8 +279,8 @@
         .phase-dot.active {
             background: rgba(255, 255, 255, 0.5);
             color: #374151;
-            transform: scale(1.05);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transform: scale(1.02);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .phase-dot.completed {
@@ -268,12 +289,27 @@
         }
 
         .phase-dot-icon {
-            font-size: 16px;
-            margin-bottom: 2px;
+            font-size: 14px;
+            margin-bottom: 1px;
+            width: 14px;
+            height: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .phase-dot-icon svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        /* Completed phase styling */
+        .phase-dot.completed .phase-dot-icon {
+            color: #22c55e; /* Green tick */
         }
 
         .phase-dot-number {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 600;
         }
 
@@ -348,11 +384,11 @@
             </div>
             
             <div class="audio-controls">
-                <button class="audio-btn enabled" id="voiceBtn" onclick="toggleVoice()">
-                    🎤 Voice On
+                <button class="audio-btn enabled" id="voiceBtn" onclick="toggleVoice()" title="Voice guidance">
+                    🎤
                 </button>
-                <button class="audio-btn enabled" id="musicBtn" onclick="toggleMusic()">
-                    🎵 Music On
+                <button class="audio-btn enabled" id="musicBtn" onclick="toggleMusic()" title="Background music">
+                    🎵
                 </button>
             </div>
         </div>
@@ -441,7 +477,7 @@
             {
                 name: 'Light & Hydration',
                 duration: 10,
-                icon: '☀️',
+                icon: 'sun',
                 color: 'phase-light',
                 instructions: 'Let the morning light find you.',
                 guidance: 'Step outside or open those curtains. Let the light touch your face. Sip some water slowly - maybe with a pinch of salt or lemon. This is your sacred time for light, water, and gentle presence.',
@@ -450,7 +486,7 @@
             {
                 name: 'Cool Refresh',
                 duration: 5,
-                icon: '❄️',
+                icon: 'droplets',
                 color: 'phase-cool',
                 instructions: 'Here comes your moment of gentle courage.',
                 guidance: 'At the end of your warm shower, turn the water cool for just 30 seconds. Breathe slowly and deeply. You\'ve got this.',
@@ -459,7 +495,7 @@
             {
                 name: 'Movement to Music',
                 duration: 10,
-                icon: '🎵',
+                icon: 'music',
                 color: 'phase-movement',
                 instructions: 'What song makes your spirit dance?',
                 guidance: 'Put on music that lifts your soul. Dance, stretch, sway - however feels good. You\'re waking up joy.',
@@ -468,7 +504,7 @@
             {
                 name: 'Nourishing Fuel',
                 duration: 10,
-                icon: '☕',
+                icon: 'coffee',
                 color: 'phase-fuel',
                 instructions: 'What will nourish your body today?',
                 guidance: 'Prepare protein mindfully - eggs, yogurt, or a protein shake. This is self-care in action.',
@@ -477,7 +513,7 @@
             {
                 name: 'Gratitude',
                 duration: 10,
-                icon: '❤️',
+                icon: 'heart',
                 color: 'phase-gratitude',
                 instructions: 'What fills your heart with warmth?',
                 guidance: 'Place your hand on your heart. Think of three things you appreciate. Feel that warmth.',
@@ -486,16 +522,16 @@
             {
                 name: 'Intentions',
                 duration: 10,
-                icon: '🎯',
+                icon: 'target',
                 color: 'phase-intentions',
                 instructions: 'What would make today meaningful?',
-                guidance: 'Consider 1-3 things that matter most today. What would make you feel proud this evening?',
+                guidance: 'Consider 1-3 things that matter most today. what would make you feel proud this evening?',
                 stickerTags: ['goal setting', 'intention', 'focus', 'purpose', 'planning', 'vision', 'clarity', 'direction', 'mindful planning', 'daily goals', 'motivation', 'ambition', 'determination', 'commitment', 'aspiration', 'objective', 'mission', 'target', 'aim', 'resolution']
             },
             {
                 name: 'Visualization',
                 duration: 10,
-                icon: '👁️',
+                icon: 'eye',
                 color: 'phase-visualization',
                 instructions: 'Can you see yourself moving through today with grace?',
                 guidance: 'Close your eyes. See yourself accomplishing your intentions with ease and confidence.',
@@ -561,6 +597,41 @@
             }
         }
 
+        // CELEBRATION GIFS for completion
+        async function fetchCelebrationGif() {
+            try {
+                const celebrationTags = ['celebration', 'success', 'victory', 'achievement', 'congratulations', 'well done', 'accomplished', 'winner', 'morning success', 'ritual complete'];
+                const randomTag = celebrationTags[Math.floor(Math.random() * celebrationTags.length)];
+                console.log('🎉 Fetching celebration GIF for:', randomTag);
+                
+                const res = await fetch(
+                    `https://api.giphy.com/v1/gifs/search?api_key=${GIPHY_API_KEY}&q=${encodeURIComponent(randomTag)}&limit=20&rating=pg`
+                );
+                
+                if (res.ok) {
+                    const json = await res.json();
+                    if (json.data?.length) {
+                        const idx = Math.floor(Math.random() * json.data.length);
+                        // Add celebration GIF to completion screen
+                        const completionDiv = document.getElementById('completion');
+                        const existingGif = completionDiv.querySelector('.celebration-gif');
+                        if (existingGif) existingGif.remove();
+                        
+                        const gifDiv = document.createElement('div');
+                        gifDiv.className = 'celebration-gif';
+                        gifDiv.style.cssText = 'margin: 20px 0; max-width: 200px; margin-left: auto; margin-right: auto;';
+                        gifDiv.innerHTML = `<img src="${json.data[idx].images.fixed_height.url}" alt="Celebration" style="max-width: 100%; border-radius: 12px;">`;
+                        
+                        completionDiv.insertBefore(gifDiv, completionDiv.querySelector('.completion-title'));
+                        console.log('🎉 Celebration GIF loaded successfully');
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.error('🎉 Celebration GIF error', e);
+            }
+        }
+
         function showFallbackGif() {
             const phase = phases[currentPhase];
             const gifContainer = document.getElementById('gifContainer');
@@ -602,7 +673,7 @@
         function toggleVoice() {
             voiceEnabled = !voiceEnabled;
             const btn = document.getElementById('voiceBtn');
-            btn.textContent = voiceEnabled ? '🎤 Voice On' : '🎤 Voice Off';
+            btn.style.opacity = voiceEnabled ? '1' : '0.4';
             btn.className = voiceEnabled ? 'audio-btn enabled' : 'audio-btn';
         }
 
@@ -611,14 +682,13 @@
             const btn = document.getElementById('musicBtn');
             const player = musicPlayer;
             
+            btn.style.opacity = musicEnabled ? '1' : '0.4';
+            btn.className = musicEnabled ? 'audio-btn enabled' : 'audio-btn';
+            
             if (musicEnabled && player) {
                 if (player.paused) player.play().catch(console.error);
-                btn.textContent = '🎵 Music On';
-                btn.className = 'audio-btn enabled';
             } else if (player) {
                 player.pause();
-                btn.textContent = '🎵 Music Off';
-                btn.className = 'audio-btn';
             }
         }
 
@@ -742,6 +812,10 @@
             pauseTimer();
             document.getElementById('app').style.display = 'none';
             document.getElementById('completion').style.display = 'block';
+            
+            // Load celebration GIF
+            fetchCelebrationGif();
+            
             playVoice('Well done, you completed your morning ritual!');
         }
 
