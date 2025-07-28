@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morning Ritual Timer - Test Version</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .timer-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        
+        /* Consistent sticker space ABOVE heading */
+        .sticker-container {
+            height: 200px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .sticker-container img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+        
+        .sticker-container img:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Animation for fallback emojis */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+        
+        .phase-name {
+            font-size: 24px;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        .timer-display {
+            font-size: 48px;
+            font-weight: 100;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+        }
+        .guidance {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        button {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            border-radius: 25px;
+            padding: 15px 30px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        button:hover {
+            background: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+        .phase-dots {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+        .dot.completed {
+            background: rgba(255, 255, 255, 0.7);
+        }
+        .completion {
+            text-align: center;
+        }
+        .celebration {
+            font-size: 60px;
+            margin: 20px 0;
+        }
+        .audio-controls {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .audio-btn {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .audio-btn.enabled {
+            background: rgba(76, 175, 80, 0.8);
+        }
+        audio {
+            width: 100%;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="timer-container">
+        <div id="app">
+            <!-- Consistent sticker space ABOVE heading as requested -->
+            <div class="sticker-container" id="stickerContainer">
+                <div style="font-size: 80px; opacity: 0.8;">☀️</div>
+            </div>
+            
+            <div class="phase-name" id="phaseName">Light & Hydration</div>
+            <div class="timer-display" id="timerDisplay">0:10</div>
+            
+            <div class="guidance" id="guidance">
+                Good morning. Let the light wake you.
+            </div>
+            
+            <!-- Audio controls -->
+            <div class="audio-controls">
+                <button class="audio-btn enabled" id="voiceBtn" onclick="toggleVoice()">🎤 Voice On</button>
+                <button class="audio-btn enabled" id="musicBtn" onclick="toggleMusic()">🎵 Music On</button>
+            </div>
+            
+            <div class="controls">
+                <button onclick="startTimer()" id="startBtn">▶️ Start</button>
+                <button onclick="pauseTimer()" id="pauseBtn" style="display:none">⏸️ Pause</button>
+                <button onclick="resetTimer()">🔄 Reset</button>
+            </div>
+            
+            <div class="phase-dots" id="phaseDots"></div>
+            
+            <!-- Music player - visible for testing -->
+            <audio id="musicPlayer" controls style="width: 100%; margin-top: 20px;"></audio>
+        </div>
+        
+        <div id="completion" style="display:none;" class="completion">
+            <div class="celebration">🌅</div>
+            <h2>Ritual Complete!</h2>
+            <p>Well done, you completed your morning ritual!</p>
+            <button onclick="resetForTomorrow()">Start New Ritual</button>
+        </div>
+        
+        <!-- Hidden voice audio -->
+        <audio id="voicePlayer"></audio>
+    </div>
+
+    <script>
+        // Configuration - EXACTLY from your working example
+        const ELEVEN_API_KEY = 'sk_0f784c61526bd19de89206bf1d1a4e30f698e5bd8b0dd39b';
+        const ELEVEN_VOICE_ID = 'WdMh5yw0KuyjyTlKfH2b';
+        const GIPHY_API_KEY = 'cOYmv8uODh0R6j65dPvypGTrw0vHO9L5';
+        
+        // Audio files hosted on GitHub Pages
+        const audioFiles = [
+            'https://klossgott.github.io/infocusapp/timer/audios/pianomusic1.mp3',
+            'https://klossgott.github.io/infocusapp/timer/audios/pianomusic2.mp3',
+            'https://klossgott.github.io/infocusapp/timer/audios/pianomusic3.mp3',
+            'https://klossgott.github.io/infocusapp/timer/audios/pianomusic4.mp3',
+            'https://klossgott.github.io/infocusapp/timer/audios/pianomusic5.mp3',
+            'https://klossgott.github.io/infocusapp/timer/audios/pianomusic6.mp3',
+            'https://klossgott.github.io/infocusapp/timer/audios/pianomusic7.mp3'
+        ];
+        
+        const phases = [
+            { 
+                name: 'Light & Hydration', 
+                duration: 10, 
+                guidance: "Good morning. Let the light wake you.", 
+                stickerTags: ['sunrise', 'morning light', 'sunshine', 'golden hour', 'dawn', 'daybreak', 'morning glow', 'bright sun', 'morning rays', 'sunbeam', 'early morning', 'morning sky', 'radiant sun', 'sunny morning', 'light therapy', 'vitamin d', 'morning warmth', 'sun exposure', 'natural light', 'awakening']
+            },
+            { 
+                name: 'Cool Refresh', 
+                duration: 5, 
+                guidance: "Feel the cool water invigorate you.", 
+                stickerTags: ['cold shower', 'refreshing', 'water drops', 'splash', 'cool water', 'invigorate', 'wake up', 'fresh', 'energizing', 'revitalizing', 'shower', 'water therapy', 'cold plunge', 'ice bath', 'cooling', 'rejuvenating', 'crisp', 'awakening', 'stimulating', 'bracing']
+            },
+            { 
+                name: 'Movement to Music', 
+                duration: 10, 
+                guidance: "Move your body with joy.", 
+                stickerTags: ['dancing', 'movement', 'exercise', 'stretching', 'yoga', 'fitness', 'active', 'energetic', 'motion', 'groove', 'rhythm', 'body movement', 'dance party', 'workout', 'flexibility', 'morning exercise', 'kinetic', 'dynamic', 'flowing', 'expressive']
+            },
+            { 
+                name: 'Nourishing Fuel', 
+                duration: 10, 
+                guidance: "Fuel your body with wholesome food.", 
+                stickerTags: ['healthy breakfast', 'nutrition', 'protein', 'nourishing', 'wholesome', 'fresh food', 'healthy eating', 'fuel', 'energy food', 'breakfast', 'organic', 'nutrients', 'vitamins', 'superfood', 'clean eating', 'mindful eating', 'balanced meal', 'wellness food', 'nutritious', 'sustenance']
+            },
+            { 
+                name: 'Gratitude', 
+                duration: 10, 
+                guidance: "Name three things you're grateful for.", 
+                stickerTags: ['gratitude', 'thankful', 'appreciation', 'blessed', 'grateful heart', 'mindfulness', 'positive thinking', 'counting blessings', 'thankfulness', 'appreciation practice', 'mindful gratitude', 'heart centered', 'emotional wellness', 'positive mindset', 'inner peace', 'contentment', 'joy', 'happiness', 'loving kindness', 'abundance']
+            },
+            { 
+                name: 'Intentions', 
+                duration: 10, 
+                guidance: "Set your intention for the day.", 
+                stickerTags: ['goal setting', 'intention', 'focus', 'purpose', 'planning', 'vision', 'clarity', 'direction', 'mindful planning', 'daily goals', 'motivation', 'ambition', 'determination', 'commitment', 'aspiration', 'objective', 'mission', 'target', 'aim', 'resolution']
+            },
+            { 
+                name: 'Visualization', 
+                duration: 10, 
+                guidance: "See yourself succeeding.", 
+                stickerTags: ['vision', 'success', 'achievement', 'visualization', 'manifestation', 'dreams', 'accomplishment', 'victory', 'triumph', 'winning', 'mental imagery', 'positive visualization', 'goal achievement', 'success mindset', 'confidence', 'empowerment', 'self-belief', 'mental rehearsal', 'future self', 'potential']
+            }
+        ];
+        
+        // State - Voice and Music ON by default
+        let currentPhase = 0;
+        let timeLeft = phases[0].duration;
+        let isRunning = false;
+        let timer = null;
+        let fadeInterval = null;
+        let voiceEnabled = true;  // ON by default
+        let musicEnabled = true;  // ON by default
+        
+        // Audio elements
+        const musicPlayer = document.getElementById('musicPlayer');
+        const voicePlayer = document.getElementById('voicePlayer');
+        
+        // fadeVolume function - EXACTLY from your working example
+        function fadeVolume(audio, target, duration = 500) {
+            if (!audio) return;
+            clearInterval(fadeInterval);
+            const stepTime = 50;
+            const steps = duration / stepTime;
+            const start = audio.volume;
+            const diff = target - start;
+            let i = 0;
+            fadeInterval = setInterval(() => {
+                i++;
+                audio.volume = Math.max(0, Math.min(1, start + (diff * i) / steps));
+                if (i >= steps) {
+                    clearInterval(fadeInterval);
+                    audio.volume = target;
+                }
+            }, stepTime);
+        }
+        
+        // fetchSticker function with CORS handling
+        async function fetchSticker(tags) {
+            try {
+                const randomTag = tags[Math.floor(Math.random() * tags.length)];
+                console.log('🎯 Fetching sticker for:', randomTag);
+                
+                // Try direct API first, then fallback to emoji
+                try {
+                    const res = await fetch(
+                        `https://api.giphy.com/v1/stickers/search?api_key=${GIPHY_API_KEY}&q=${encodeURIComponent(randomTag)}&limit=20&rating=pg`
+                    );
+                    
+                    if (res.ok) {
+                        const json = await res.json();
+                        if (json.data?.length) {
+                            const idx = Math.floor(Math.random() * json.data.length);
+                            const stickerContainer = document.getElementById('stickerContainer');
+                            stickerContainer.innerHTML = `<img src="${json.data[idx].images.fixed_height.url}" alt="Phase sticker">`;
+                            console.log('✨ Sticker loaded successfully');
+                            return;
+                        }
+                    }
+                } catch (apiError) {
+                    console.log('🎯 API blocked, using fallback');
+                }
+                
+                // Fallback: Show contextual emoji
+                showFallbackSticker();
+                
+            } catch (e) {
+                console.error('Sticker error', e);
+                showFallbackSticker();
+            }
+        }
+        
+        // Fallback sticker function
+        function showFallbackSticker() {
+            const emojis = ['☀️', '❄️', '🎵', '☕', '❤️', '🎯', '👁️'];
+            const stickerContainer = document.getElementById('stickerContainer');
+            stickerContainer.innerHTML = `
+                <div style="font-size: 80px; opacity: 0.8; animation: pulse 2s infinite;">
+                    ${emojis[currentPhase]}
+                </div>
+            `;
+            console.log('🎯 Using fallback emoji for phase:', currentPhase);
+        }
+        
+        // playVoice function - EXACTLY from your working example
+        async function playVoice(text) {
+            if (!voiceEnabled) return;
+            
+            const music = musicPlayer;
+            if (music && !music.paused) fadeVolume(music, 0.05);
+            
+            try {
+                console.log('🎤 Playing voice:', text);
+                const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'xi-api-key': ELEVEN_API_KEY },
+                    body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2' })
+                });
+                if (!res.ok) throw new Error(`Voice error ${res.status}`);
+                const buf = await res.arrayBuffer();
+                const blob = new Blob([buf], { type: 'audio/mpeg' });
+                const url = URL.createObjectURL(blob);
+                const voice = voicePlayer;
+                if (voice) {
+                    voice.src = url;
+                    voice.volume = 1;
+                    voice.onended = () => {
+                        URL.revokeObjectURL(url);
+                        if (music && !music.paused) fadeVolume(music, 0.2);
+                    };
+                    await voice.play();
+                    console.log('🎤 ElevenLabs voice played successfully');
+                }
+            } catch (e) {
+                console.error('Voice error', e);
+                if (music && !music.paused) fadeVolume(music, 0.2);
+            }
+        }
+        
+        // Audio control functions
+        function toggleVoice() {
+            voiceEnabled = !voiceEnabled;
+            const btn = document.getElementById('voiceBtn');
+            btn.textContent = voiceEnabled ? '🎤 Voice On' : '🎤 Voice Off';
+            btn.className = voiceEnabled ? 'audio-btn enabled' : 'audio-btn';
+            console.log('🎤 Voice:', voiceEnabled ? 'enabled' : 'disabled');
+        }
+        
+        function toggleMusic() {
+            musicEnabled = !musicEnabled;
+            const btn = document.getElementById('musicBtn');
+            const player = musicPlayer;
+            
+            if (musicEnabled && player) {
+                if (player.paused) {
+                    player.play().catch(console.error);
+                }
+                btn.textContent = '🎵 Music On';
+                btn.className = 'audio-btn enabled';
+            } else if (player) {
+                player.pause();
+                btn.textContent = '🎵 Music Off';
+                btn.className = 'audio-btn';
+            }
+            console.log('🎵 Music:', musicEnabled ? 'enabled' : 'disabled');
+        }
+        
+        // Initialize and assign a random music file - EXACTLY from your working example
+        function initializeMusic() {
+            const player = musicPlayer;
+            if (player && musicEnabled) {
+                const idx = Math.floor(Math.random() * audioFiles.length);
+                player.src = audioFiles[idx];
+                player.volume = 0.2;
+                player.loop = true;
+                
+                // Try to start music
+                const playPromise = player.play();
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            console.log('🎵 Music started:', audioFiles[idx]);
+                        })
+                        .catch((error) => {
+                            console.log('🎵 Autoplay blocked, user interaction required');
+                        });
+                }
+            }
+        }
+        
+        // Update display
+        function updateDisplay() {
+            document.getElementById('phaseName').textContent = phases[currentPhase].name;
+            document.getElementById('guidance').textContent = phases[currentPhase].guidance;
+            updateTimer();
+            updateDots();
+        }
+        
+        // Update timer display
+        function updateTimer() {
+            const mins = Math.floor(timeLeft / 60);
+            const secs = timeLeft % 60;
+            document.getElementById('timerDisplay').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Update phase dots
+        function updateDots() {
+            const dotsContainer = document.getElementById('phaseDots');
+            dotsContainer.innerHTML = '';
+            phases.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                if (index === currentPhase) dot.classList.add('active');
+                if (index < currentPhase) dot.classList.add('completed');
+                dot.onclick = () => goToPhase(index);
+                dotsContainer.appendChild(dot);
+            });
+        }
+        
+        // Timer functions
+        function startTimer() {
+            if (timeLeft === 0) {
+                timeLeft = phases[currentPhase].duration;
+            }
+            isRunning = true;
+            document.getElementById('startBtn').style.display = 'none';
+            document.getElementById('pauseBtn').style.display = 'inline-flex';
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                updateTimer();
+                
+                if (timeLeft <= 0) {
+                    if (currentPhase < phases.length - 1) {
+                        nextPhase();
+                    } else {
+                        completeRitual();
+                    }
+                }
+            }, 1000);
+            
+            // Play voice and load sticker - like your working example
+            const phase = phases[currentPhase];
+            fetchSticker(phase.stickerTags);
+            playVoice(phase.guidance);
+        }
+        
+        function pauseTimer() {
+            isRunning = false;
+            clearInterval(timer);
+            document.getElementById('startBtn').style.display = 'inline-flex';
+            document.getElementById('pauseBtn').style.display = 'none';
+        }
+        
+        function resetTimer() {
+            pauseTimer();
+            currentPhase = 0;
+            timeLeft = phases[0].duration;
+            document.getElementById('app').style.display = 'block';
+            document.getElementById('completion').style.display = 'none';
+            updateDisplay();
+            fetchSticker(phases[0].stickerTags);
+        }
+        
+        function nextPhase() {
+            currentPhase++;
+            timeLeft = phases[currentPhase].duration;
+            updateDisplay();
+            const phase = phases[currentPhase];
+            fetchSticker(phase.stickerTags);
+            playVoice(phase.guidance);
+        }
+        
+        function goToPhase(index) {
+            if (!isRunning) {
+                currentPhase = index;
+                timeLeft = phases[index].duration;
+                updateDisplay();
+                fetchSticker(phases[index].stickerTags);
+            }
+        }
+        
+        function completeRitual() {
+            pauseTimer();
+            document.getElementById('app').style.display = 'none';
+            document.getElementById('completion').style.display = 'block';
+            playVoice('Well done, you completed your morning ritual!');
+        }
+        
+        function resetForTomorrow() {
+            resetTimer();
+        }
+        
+        // Initialize on page load
+        window.onload = function() {
+            initializeMusic();
+            updateDisplay();
+            fetchSticker(phases[currentPhase].stickerTags);
+            console.log('Morning Ritual Timer Test Version loaded! 🌅');
+        };
+    </script>
+</body>
+</html>
