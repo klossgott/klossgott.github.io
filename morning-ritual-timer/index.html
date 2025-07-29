@@ -700,67 +700,36 @@
         }
 
         async function playVoice(text) {
-            if (!voiceEnabled) {
-                console.log('Voice disabled - skipping TTS');
-                return;
-            }
+            if (!voiceEnabled) return;
             
             // Clean text for TTS - remove markdown and formatting
             const cleanText = text.replace(/\*\*/g, '').replace(/\*/g, '').replace(/\n/g, ' ').trim();
-            console.log('Playing voice:', cleanText);
             
             const music = musicPlayer;
             if (music && !music.paused) fadeVolume(music, 0.05);
             
             try {
-                console.log('Calling ElevenLabs API...');
                 const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`, {
                     method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json', 
-                        'xi-api-key': ELEVEN_API_KEY 
-                    },
-                    body: JSON.stringify({ 
-                        text: cleanText, 
-                        model_id: 'eleven_multilingual_v2' 
-                    })
+                    headers: { 'Content-Type': 'application/json', 'xi-api-key': ELEVEN_API_KEY },
+                    body: JSON.stringify({ text: cleanText, model_id: 'eleven_multilingual_v2' })
                 });
-                
-                console.log('ElevenLabs response status:', res.status);
-                
-                if (!res.ok) {
-                    const errorText = await res.text();
-                    console.error('ElevenLabs error:', res.status, errorText);
-                    throw new Error(`Voice error ${res.status}: ${errorText}`);
-                }
-                
+                if (!res.ok) throw new Error(`Voice error ${res.status}`);
                 const buf = await res.arrayBuffer();
-                console.log('Audio buffer size:', buf.byteLength);
-                
                 const blob = new Blob([buf], { type: 'audio/mpeg' });
                 const url = URL.createObjectURL(blob);
                 const voice = voicePlayer;
-                
                 if (voice) {
                     voice.src = url;
                     voice.volume = 1;
                     voice.onended = () => {
                         URL.revokeObjectURL(url);
                         if (music && !music.paused) fadeVolume(music, 0.2);
-                        console.log('Voice playback completed');
                     };
-                    voice.onerror = (e) => {
-                        console.error('Voice playback error:', e);
-                    };
-                    
-                    console.log('Starting voice playback...');
                     await voice.play();
-                    console.log('Voice playback started successfully');
-                } else {
-                    console.error('Voice player element not found');
                 }
             } catch (e) {
-                console.error('Voice error details:', e);
+                console.error('Voice error', e);
                 if (music && !music.paused) fadeVolume(music, 0.2);
             }
         }
