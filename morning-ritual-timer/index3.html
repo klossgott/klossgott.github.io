@@ -25,7 +25,7 @@
             transition: background-color 1000ms ease-in-out;
         }
 
-        /* Dynamic phase colors - RESTORED */
+        /* Dynamic phase colors */
         .phase-light { background-color: #fef3c7; }
         .phase-cool { background-color: #dbeafe; }
         .phase-movement { background-color: #dcfce7; }
@@ -34,7 +34,7 @@
         .phase-intentions { background-color: #dbeafe; }
         .phase-visualization { background-color: #ccfbf1; }
 
-        /* Header with glassmorphism - MORE COMPACT */
+        /* Header */
         .header {
             background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
@@ -52,7 +52,6 @@
         }
 
         .phase-icon {
-            font-size: 28px;
             width: 28px;
             height: 28px;
             display: flex;
@@ -73,41 +72,8 @@
 
         .phase-step {
             font-size: 13px;
-            opacity: 70%;
+            opacity: 0.7;
             margin: 0;
-        }
-
-        .audio-controls {
-            display: flex;
-            gap: 6px;
-            justify-content: center;
-            margin-top: 12px;
-        }
-
-        /* NEUTRAL ICON BUTTONS */
-        .audio-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            color: #6b7280;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-
-        .audio-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        .audio-btn.enabled {
-            background: rgba(255, 255, 255, 0.2);
-            color: #374151;
         }
 
         /* Progress bar */
@@ -122,13 +88,13 @@
             transition: width 1000ms ease-out;
         }
 
-        /* Main content - MORE COMPACT */
+        /* Main content */
         .content {
             padding: 24px 20px;
             text-align: center;
         }
 
-        /* GIF Container - TRANSPARENT with smaller size */
+        /* GIF Container */
         .gif-container {
             height: 140px;
             width: 100%;
@@ -154,10 +120,17 @@
             transform: scale(1.02);
         }
 
-        .gif-container .fallback-emoji {
-            font-size: 64px;
+        .gif-container .fallback-icon {
             opacity: 0.7;
             animation: pulse 2s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gif-container .fallback-icon svg {
+            width: 64px;
+            height: 64px;
         }
 
         @keyframes pulse {
@@ -165,7 +138,7 @@
             50% { transform: scale(1.05); opacity: 0.9; }
         }
 
-        /* Timer display - MORE COMPACT */
+        /* Timer display */
         .timer-display {
             font-size: 48px;
             font-weight: 100;
@@ -175,7 +148,7 @@
             letter-spacing: 2px;
         }
 
-        /* Guidance box - MORE COMPACT */
+        /* Guidance box */
         .guidance-box {
             background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(10px);
@@ -197,7 +170,7 @@
             font-size: 13px;
         }
 
-        /* Controls - MORE COMPACT */
+        /* Controls */
         .controls {
             display: flex;
             gap: 12px;
@@ -231,7 +204,21 @@
             transform: translateY(0);
         }
 
-        /* Phase navigation - MORE COMPACT */
+        .reset-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: #6b7280;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin: 0 auto;
+        }
+
+        /* Phase navigation */
         .phase-nav {
             border-top: 1px solid rgba(255, 255, 255, 0.2);
             padding-top: 16px;
@@ -282,13 +269,12 @@
         }
 
         .phase-dot-icon {
-            font-size: 14px;
-            margin-bottom: 1px;
             width: 14px;
             height: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-bottom: 1px;
         }
 
         .phase-dot-icon svg {
@@ -296,14 +282,73 @@
             height: 12px;
         }
 
-        /* Completed phase styling */
         .phase-dot.completed .phase-dot-icon {
-            color: #22c55e; /* Green tick */
+            color: #22c55e;
         }
 
         .phase-dot-number {
             font-size: 9px;
             font-weight: 600;
+        }
+
+        /* Music player controls */
+        .music-player {
+            margin-top: 24px;
+            opacity: 0.7;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .shuffle-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 12px;
+            padding: 4px 8px;
+            color: #6b7280;
+            font-size: 11px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 6px;
+        }
+
+        .audio-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .audio-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .audio-btn.enabled {
+            background: rgba(255, 255, 255, 0.2);
+            color: #374151;
+        }
+
+        .music-player audio {
+            width: 100%;
+            height: 40px;
         }
 
         /* Completion screen */
@@ -312,9 +357,15 @@
             padding: 40px 24px;
         }
 
-        .completion-emoji {
-            font-size: 80px;
+        .completion-icon {
             margin-bottom: 24px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .completion-icon svg {
+            width: 80px;
+            height: 80px;
         }
 
         .completion-title {
@@ -331,17 +382,6 @@
             line-height: 1.6;
         }
 
-        /* Music player */
-        .music-player {
-            margin-top: 24px;
-            opacity: 0.7;
-        }
-
-        .music-player audio {
-            width: 100%;
-            height: 40px;
-        }
-
         /* Responsive */
         @media (max-width: 480px) {
             .timer-container {
@@ -349,7 +389,7 @@
             }
             
             .timer-display {
-                font-size: 48px;
+                font-size: 40px;
             }
             
             .controls {
@@ -370,21 +410,15 @@
         <div class="header">
             <div class="phase-info">
                 <div class="phase-icon" id="phaseIcon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
                 </div>
                 <div>
                     <h1 class="phase-title" id="phaseTitle">Light & Hydration</h1>
                     <p class="phase-step" id="phaseStep">Step 1 of 7</p>
                 </div>
-            </div>
-            
-            <div class="audio-controls">
-                <button class="audio-btn enabled" id="voiceBtn" onclick="toggleVoice()" title="Voice guidance">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-                </button>
-                <button class="audio-btn enabled" id="musicBtn" onclick="toggleMusic()" title="Background music">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-                </button>
             </div>
         </div>
 
@@ -395,9 +429,14 @@
 
         <!-- Main App -->
         <div class="content" id="app">
-            <!-- Transparent GIF Container (smaller size) -->
+            <!-- GIF Container -->
             <div class="gif-container" id="gifContainer">
-                <div class="fallback-emoji">☀️</div>
+                <div class="fallback-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"/>
+                        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                </div>
             </div>
 
             <!-- Timer -->
@@ -414,17 +453,28 @@
             <!-- Controls -->
             <div class="controls">
                 <button class="control-btn" onclick="startTimer()" id="startBtn">
-                    ▶️ Begin Gently
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="5,3 19,12 5,21"/>
+                    </svg>
+                    Begin Gently
                 </button>
                 <button class="control-btn" onclick="pauseTimer()" id="pauseBtn" style="display:none">
-                    ⏸️ Pause
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="6" y="4" width="4" height="16"/>
+                        <rect x="14" y="4" width="4" height="16"/>
+                    </svg>
+                    Pause
                 </button>
             </div>
 
-            <!-- Reset button below -->
+            <!-- Reset button -->
             <div style="text-align: center; margin-bottom: 24px;">
-                <button onclick="resetTimer()" style="background: rgba(255,255,255,0.2); border: none; border-radius: 20px; padding: 8px 16px; color: #6b7280; font-size: 12px; cursor: pointer;">
-                    🔄 Reset
+                <button class="reset-btn" onclick="resetTimer()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="1,4 1,10 7,10"/>
+                        <path d="M3.51,15a9,9 0 1,0 2.13-9.36L1,10"/>
+                    </svg>
+                    Reset
                 </button>
             </div>
 
@@ -434,12 +484,35 @@
                 <div class="phase-dots" id="phaseDots"></div>
             </div>
 
-            <!-- Music Player with audio controls at bottom -->
+            <!-- Music Player -->
             <div class="music-player">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                    <button onclick="changeTrack()" style="background: rgba(255,255,255,0.2); border: none; border-radius: 12px; padding: 4px 8px; color: #6b7280; font-size: 11px; cursor: pointer;">
-                        🔀
+                <div class="music-controls">
+                    <button class="shuffle-btn" onclick="changeTrack()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="16,3 21,3 21,8"/>
+                            <line x1="4" y1="20" x2="21" y2="3"/>
+                            <polyline points="21,16 21,21 16,21"/>
+                            <line x1="15" y1="15" x2="21" y2="21"/>
+                            <line x1="4" y1="4" x2="9" y2="9"/>
+                        </svg>
+                        Shuffle
                     </button>
+                    
+                    <div class="audio-controls">
+                        <button class="audio-btn enabled" id="voiceBtn" onclick="toggleVoice()" title="Voice guidance">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/>
+                                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                            </svg>
+                        </button>
+                        <button class="audio-btn enabled" id="musicBtn" onclick="toggleMusic()" title="Background music">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 18V5l12-2v13"/>
+                                <circle cx="6" cy="18" r="3"/>
+                                <circle cx="18" cy="16" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <audio id="musicPlayer" controls></audio>
             </div>
@@ -447,6 +520,12 @@
 
         <!-- Completion Screen -->
         <div class="completion" id="completion" style="display:none;">
+            <div class="completion-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22,4 12,14.01 9,11.01"/>
+                </svg>
+            </div>
             <h2 class="completion-title">Well done!</h2>
             <div class="completion-message">
                 You've completed your morning ritual. You chose to begin. That's everything.
@@ -463,7 +542,7 @@
     </div>
 
     <script>
-        // Configuration - EXACT from v61
+        // Configuration
         const ELEVEN_API_KEY = 'sk_0f784c61526bd19de89206bf1d1a4e30f698e5bd8b0dd39b';
         const ELEVEN_VOICE_ID = 'WdMh5yw0KuyjyTlKfH2b';
 
@@ -480,67 +559,7 @@
         const phases = [
             {
                 name: 'Light & Hydration',
-                duration: 600, // 10 minutes
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
-                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
-                color: 'phase-light',
-                instructions: 'Let the morning light find you.',
-                guidance: 'Step outside or open those curtains. Let the light touch your face. Sip some water slowly - maybe with a pinch of salt or lemon. This is your sacred time for light, water, and gentle presence.',
-                gifFolder: 'sunshine'
-            },
-            {
-                name: 'Cool Refresh',
-                duration: 30, // 30 seconds
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2.04 4.6 4.14 5.93a10.94 10.94 0 0 0 1.26 3.23"/><path d="M17.13 4.9c.84.8 1.6 1.76 2.23 2.84-.51.29-1.03.56-1.47.93-.44.37-.77.82-.92 1.35"/></svg>',
-                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2.04 4.6 4.14 5.93a10.94 10.94 0 0 0 1.26 3.23"/><path d="M17.13 4.9c.84.8 1.6 1.76 2.23 2.84-.51.29-1.03.56-1.47.93-.44.37-.77.82-.92 1.35"/></svg>',
-                color: 'phase-cool',
-                instructions: 'Here comes your moment of gentle courage.',
-                guidance: 'At the end of your warm shower, turn the water cool for just 30 seconds. Breathe slowly and deeply. You\'ve got this.',
-                gifFolder: 'coldshower'
-            },
-            {
-                name: 'Movement to Music',
-                duration: 75, // 75 seconds (1 min 15 sec)
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
-                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
-                color: 'phase-movement',
-                instructions: 'What song makes your spirit dance?',
-                guidance: 'Put on music that lifts your soul. Dance, stretch, sway - however feels good. You\'re waking up joy.',
-                gifFolder: 'dance'
-            },
-            {
-                name: 'Nourishing Fuel',
-                duration: 300, // 5 minutes
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>',
-                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>',
-                color: 'phase-fuel',
-                instructions: 'What will nourish your body today?',
-                guidance: 'Prepare protein mindfully - eggs, yogurt, or a protein shake. This is self-care in action.',
-                gifFolder: 'breakfast'
-            },
-            {
-                name: 'Gratitude',
-                duration: 60, // 1 minute
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
-                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
-                color: 'phase-gratitude',
-                instructions: 'What fills your heart with warmth?',
-                guidance: 'Place your hand on your heart. Think of three things you appreciate. Feel that warmth.',
-                gifFolder: 'thank you'
-            },
-            {
-                name: 'Intentions',
-                duration: 60, // 1 minute
-                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
-                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
-                color: 'phase-intentions',
-                instructions: 'What would make today meaningful?',
-                guidance: 'Consider 1-3 things that matter most today. What would make you feel proud this evening?',
-                gifFolder: 'intention'
-            },
-            {
-                name: 'Visualization',
-                duration: 60, // 1 minute
+                duration: 600,
                 iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
                 iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
                 color: 'phase-visualization',
@@ -550,7 +569,7 @@
             }
         ];
 
-        // State - EXACT from v61
+        // State
         let currentPhase = 0;
         let timeLeft = phases[0].duration;
         let isRunning = false;
@@ -562,7 +581,7 @@
         const musicPlayer = document.getElementById('musicPlayer');
         const voicePlayer = document.getElementById('voicePlayer');
 
-        // Audio functions from your working example - EXACT from v61
+        // Audio functions
         function fadeVolume(audio, target, duration = 500) {
             if (!audio) return;
             clearInterval(fadeInterval);
@@ -581,16 +600,73 @@
             }, stepTime);
         }
 
-        // Load local GIF from folder - UPDATED for your GitHub structure
+        // Load local GIF from folder - SCAN FOR ANY FILES
         async function loadLocalGif(folderName) {
             try {
-                const extensions = ['gif', 'webp'];
-                const commonNames = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 
-                                   'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+                console.log(`🔍 Scanning folder: ${folderName}`);
+                
+                // Try to fetch the folder index (if your server supports directory listing)
+                try {
+                    const response = await fetch(`./gifs/${folderName}/`);
+                    if (response.ok) {
+                        const html = await response.text();
+                        // Parse HTML to find gif/image files
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const links = doc.querySelectorAll('a[href]');
+                        
+                        for (const link of links) {
+                            const href = link.getAttribute('href');
+                            if (href && (href.endsWith('.gif') || href.endsWith('.webp') || href.endsWith('.png') || href.endsWith('.jpg'))) {
+                                const url = `./gifs/${folderName}/${href}`;
+                                
+                                try {
+                                    const img = new Image();
+                                    img.src = url;
+                                    
+                                    await new Promise((resolve, reject) => {
+                                        img.onload = resolve;
+                                        img.onerror = reject;
+                                        setTimeout(reject, 2000);
+                                    });
+                                    
+                                    const gifContainer = document.getElementById('gifContainer');
+                                    gifContainer.innerHTML = `<img src="${url}" alt="Phase animation">`;
+                                    console.log(`✅ Found and loaded: ${url}`);
+                                    return;
+                                    
+                                } catch (e) {
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                } catch (dirError) {
+                    console.log('Directory listing not available, trying common patterns...');
+                }
+                
+                // Fallback: try many random patterns and common filenames
+                const extensions = ['gif', 'webp', 'png', 'jpg', 'jpeg'];
+                const patterns = [
+                    // Numbers
+                    '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15',
+                    '01', '02', '03', '04', '05', '06', '07', '08', '09',
+                    // Letters
+                    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 
+                    // Common words
+                    'image', 'img', 'pic', 'photo', 'anim', 'animation', 'gif', 'main', 'default',
+                    // Folder-specific
+                    folderName, folderName + '1', folderName + '2', folderName + '_1', folderName + '_2',
+                    // Random common patterns
+                    'giphy', 'tenor', 'media', 'file', 'asset', 'content', 'sample', 'demo'
+                ];
+                
+                // Shuffle patterns for random selection
+                const shuffledPatterns = patterns.sort(() => Math.random() - 0.5);
                 
                 for (const ext of extensions) {
-                    for (const name of commonNames) {
-                        const url = `https://klossgott.github.io/morning-ritual-timer/gifs/${folderName}/${name}.${ext}`;
+                    for (const pattern of shuffledPatterns) {
+                        const url = `./gifs/${folderName}/${pattern}.${ext}`;
                         
                         try {
                             const img = new Image();
@@ -599,12 +675,12 @@
                             await new Promise((resolve, reject) => {
                                 img.onload = resolve;
                                 img.onerror = reject;
-                                setTimeout(reject, 1000);
+                                setTimeout(reject, 1000); // Quick timeout per attempt
                             });
                             
                             const gifContainer = document.getElementById('gifContainer');
                             gifContainer.innerHTML = `<img src="${url}" alt="Phase animation">`;
-                            console.log(`✅ Local GIF loaded: ${url}`);
+                            console.log(`✅ Found random file: ${url}`);
                             return;
                             
                         } catch (e) {
@@ -613,25 +689,32 @@
                     }
                 }
                 
-                console.log(`❌ No local GIF found in folder: ${folderName}`);
-                showFallbackGif();
+                console.log(`❌ No files found in folder: ${folderName}`);
+                showFallbackIcon();
                 
             } catch (error) {
-                console.error('Error loading local GIF:', error);
-                showFallbackGif();
+                console.error('Error loading GIF:', error);
+                showFallbackIcon();
             }
         }
 
-        // Load celebration GIF - UPDATED for your GitHub structure
+        // Load celebration GIF - SCAN FOR ANY FILES
         async function loadCelebrationGif() {
             try {
-                const extensions = ['gif', 'webp'];
-                const commonNames = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 
-                                   'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
+                console.log('🎉 Looking for celebration GIFs...');
+                
+                const extensions = ['gif', 'webp', 'png', 'jpg', 'jpeg'];
+                const patterns = [
+                    '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15',
+                    '01', '02', '03', '04', '05', '06', '07', '08', '09',
+                    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
+                    'celebrate', 'celebration', 'party', 'success', 'win', 'victory', 'done', 'complete',
+                    'congratulations', 'congrats', 'yay', 'hooray', 'awesome', 'great', 'excellent'
+                ].sort(() => Math.random() - 0.5);
                 
                 for (const ext of extensions) {
-                    for (const name of commonNames) {
-                        const url = `https://klossgott.github.io/morning-ritual-timer/gifs/celebrate/${name}.${ext}`;
+                    for (const pattern of patterns) {
+                        const url = `./gifs/celebrate/${pattern}.${ext}`;
                         
                         try {
                             const img = new Image();
@@ -653,7 +736,7 @@
                             gifDiv.innerHTML = `<img src="${url}" alt="Celebration" style="max-width: 100%; border-radius: 12px;">`;
                             
                             completionDiv.insertBefore(gifDiv, completionDiv.querySelector('.completion-title'));
-                            console.log(`🎉 Celebration GIF loaded: ${url}`);
+                            console.log(`🎉 Found celebration GIF: ${url}`);
                             return;
                             
                         } catch (e) {
@@ -669,10 +752,10 @@
             }
         }
 
-        function showFallbackGif() {
+        function showFallbackIcon() {
             const phase = phases[currentPhase];
             const gifContainer = document.getElementById('gifContainer');
-            gifContainer.innerHTML = `<div class="fallback-emoji">${phase.iconSvg}</div>`;
+            gifContainer.innerHTML = `<div class="fallback-icon">${phase.iconSvg.replace('width="24" height="24"', 'width="64" height="64"')}</div>`;
         }
 
         async function playVoice(text) {
@@ -724,6 +807,12 @@
             const btn = document.getElementById('musicBtn');
             btn.style.opacity = musicEnabled ? '1' : '0.4';
             btn.className = musicEnabled ? 'audio-btn enabled' : 'audio-btn';
+            
+            if (!musicEnabled && musicPlayer && !musicPlayer.paused) {
+                musicPlayer.pause();
+            } else if (musicEnabled && musicPlayer && musicPlayer.paused) {
+                musicPlayer.play().catch(console.error);
+            }
         }
 
         function initializeMusic() {
@@ -884,14 +973,74 @@
             resetTimer();
         }
 
-        // Initialize - EXACT from v61
+        // Initialize
         window.onload = function() {
             initializeMusic();
             updateDisplay();
             loadLocalGif(phases[0].gifFolder);
             
-            console.log('Beautiful Morning Ritual Timer loaded! 🌅');
+            console.log('Beautiful Morning Ritual Timer v67 loaded! 🌅');
         };
     </script>
 </body>
-</html>
+</html>ecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>',
+                color: 'phase-light',
+                instructions: 'Let the morning light find you.',
+                guidance: 'Step outside or open those curtains. Let the light touch your face. Sip some water slowly - maybe with a pinch of salt or lemon. This is your sacred time for light, water, and gentle presence.',
+                gifFolder: 'sunshine'
+            },
+            {
+                name: 'Cool Refresh',
+                duration: 30,
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>',
+                color: 'phase-cool',
+                instructions: 'Here comes your moment of gentle courage.',
+                guidance: 'At the end of your warm shower, turn the water cool for just 30 seconds. Breathe slowly and deeply. You\'ve got this.',
+                gifFolder: 'coldshower'
+            },
+            {
+                name: 'Movement to Music',
+                duration: 75,
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>',
+                color: 'phase-movement',
+                instructions: 'What song makes your spirit dance?',
+                guidance: 'Put on music that lifts your soul. Dance, stretch, sway - however feels good. You\'re waking up joy.',
+                gifFolder: 'dance'
+            },
+            {
+                name: 'Nourishing Fuel',
+                duration: 300,
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/></svg>',
+                color: 'phase-fuel',
+                instructions: 'What will nourish your body today?',
+                guidance: 'Prepare protein mindfully - eggs, yogurt, or a protein shake. This is self-care in action.',
+                gifFolder: 'breakfast'
+            },
+            {
+                name: 'Gratitude',
+                duration: 60,
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>',
+                color: 'phase-gratitude',
+                instructions: 'What fills your heart with warmth?',
+                guidance: 'Place your hand on your heart. Think of three things you appreciate. Feel that warmth.',
+                gifFolder: 'thank you'
+            },
+            {
+                name: 'Intentions',
+                duration: 60,
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+                iconSvgSmall: '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+                color: 'phase-intentions',
+                instructions: 'What would make today meaningful?',
+                guidance: 'Consider 1-3 things that matter most today. What would make you feel proud this evening?',
+                gifFolder: 'intention'
+            },
+            {
+                name: 'Visualization',
+                duration: 60,
+                iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-lin
