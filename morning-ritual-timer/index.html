@@ -911,12 +911,15 @@
         }
 
         function goToPhase(index) {
-            if (!isRunning) {
-                currentPhase = index;
-                timeLeft = phases[index].duration;
-                updateDisplay();
-                loadLocalGif(phases[index].gifFolder);
-            }
+            // Allow phase switching whether timer is running or not
+            currentPhase = index;
+            timeLeft = phases[index].duration;
+            updateDisplay();
+            loadLocalGif(phases[index].gifFolder);
+            
+            // If timer was running, keep it running with the new phase
+            // If it was paused, keep it paused
+            console.log(`Switched to phase ${index + 1}: ${phases[index].name}`);
         }
 
         function completeRitual() {
