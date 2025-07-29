@@ -613,131 +613,105 @@
             }, stepTime);
         }
 
+        // Simple approach: try to get directory listing, pick random file
         async function loadLocalGif(folderName) {
+            console.log(`🔍 Loading random image from: ${folderName}`);
+            
             try {
-                console.log(`🔍 Scanning folder: ${folderName}`);
-                
-                // Try to fetch the folder index (if your server supports directory listing)
-                try {
-                    const response = await fetch(`./gifs/${folderName}/`);
-                    if (response.ok) {
-                        const html = await response.text();
-                        // Parse HTML to find gif/image files
-                        const parser = new DOMParser();
-                        const doc = parser.parseFromString(html, 'text/html');
-                        const links = doc.querySelectorAll('a[href]');
-                        
-                        for (const link of links) {
-                            const href = link.getAttribute('href');
-                            if (href && (href.endsWith('.gif') || href.endsWith('.webp') || href.endsWith('.png') || href.endsWith('.jpg'))) {
-                                const url = `./gifs/${folderName}/${href}`;
-                                
-                                try {
-                                    const img = new Image();
-                                    img.src = url;
-                                    
-                                    await new Promise((resolve, reject) => {
-                                        img.onload = resolve;
-                                        img.onerror = reject;
-                                        setTimeout(reject, 2000);
-                                    });
-                                    
-                                    const gifContainer = document.getElementById('gifContainer');
-                                    gifContainer.innerHTML = `<img src="${url}" alt="Phase animation">`;
-                                    console.log(`✅ Found and loaded: ${url}`);
-                                    return;
-                                    
-                                } catch (e) {
-                                    continue;
-                                }
-                            }
+                // Try to get directory listing
+                const response = await fetch(`./gifs/${folderName}/`);
+                if (response.ok) {
+                    const html = await response.text();
+                    console.log('Got directory listing, parsing...');
+                    
+                    // Extract all image files from directory listing
+                    const imageFiles = [];
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const links = doc.querySelectorAll('a[href]');
+                    
+                    links.forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (href && (
+                            href.toLowerCase().endsWith('.gif') || 
+                            href.toLowerCase().endsWith('.webp') || 
+                            href.toLowerCase().endsWith('.png') || 
+                            href.toLowerCase().endsWith('.jpg') || 
+                            href.toLowerCase().endsWith('.jpeg')
+                        ) && !href.startsWith('..')) {
+                            imageFiles.push(href);
                         }
-                    }
-                } catch (dirError) {
-                    console.log('Directory listing not available, trying common patterns...');
-                }
-                
-                // Fallback: try many random patterns and common filenames
-                const extensions = ['gif', 'webp', 'png', 'jpg', 'jpeg'];
-                const patterns = [
-                    // Numbers
-                    '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15',
-                    '01', '02', '03', '04', '05', '06', '07', '08', '09',
-                    // Letters
-                    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 
-                    // Common words
-                    'image', 'img', 'pic', 'photo', 'anim', 'animation', 'gif', 'main', 'default',
-                    // Folder-specific
-                    folderName, folderName + '1', folderName + '2', folderName + '_1', folderName + '_2',
-                    // Random common patterns
-                    'giphy', 'tenor', 'media', 'file', 'asset', 'content', 'sample', 'demo'
-                ];
-                
-                // Shuffle patterns for random selection
-                const shuffledPatterns = patterns.sort(() => Math.random() - 0.5);
-                
-                for (const ext of extensions) {
-                    for (const pattern of shuffledPatterns) {
-                        const url = `./gifs/${folderName}/${pattern}.${ext}`;
+                    });
+                    
+                    console.log(`Found ${imageFiles.length} image files:`, imageFiles);
+                    
+                    if (imageFiles.length > 0) {
+                        // Pick random file
+                        const randomFile = imageFiles[Math.floor(Math.random() * imageFiles.length)];
+                        const url = `./gifs/${folderName}/${randomFile}`;
                         
-                        try {
-                            const img = new Image();
-                            img.src = url;
-                            
-                            await new Promise((resolve, reject) => {
-                                img.onload = resolve;
-                                img.onerror = reject;
-                                setTimeout(reject, 1000); // Quick timeout per attempt
-                            });
-                            
+                        console.log(`Trying to load: ${url}`);
+                        
+                        // Load the random image
+                        const img = new Image();
+                        img.onload = () => {
                             const gifContainer = document.getElementById('gifContainer');
                             gifContainer.innerHTML = `<img src="${url}" alt="Phase animation">`;
-                            console.log(`✅ Found random file: ${url}`);
-                            return;
-                            
-                        } catch (e) {
-                            continue;
-                        }
+                            console.log(`✅ Successfully loaded: ${url}`);
+                        };
+                        img.onerror = () => {
+                            console.log(`❌ Failed to load: ${url}`);
+                            showFallbackIcon();
+                        };
+                        img.src = url;
+                        return;
                     }
                 }
                 
-                console.log(`❌ No files found in folder: ${folderName}`);
+                console.log('Directory listing not available or no images found');
                 showFallbackIcon();
                 
             } catch (error) {
-                console.error('Error loading GIF:', error);
+                console.error('Error loading directory:', error);
                 showFallbackIcon();
             }
         }
 
-        // Load celebration GIF - SCAN FOR ANY FILES
+        // Same approach for celebration
         async function loadCelebrationGif() {
+            console.log('🎉 Loading random celebration image...');
+            
             try {
-                console.log('🎉 Looking for celebration GIFs...');
-                
-                const extensions = ['gif', 'webp', 'png', 'jpg', 'jpeg'];
-                const patterns = [
-                    '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15',
-                    '01', '02', '03', '04', '05', '06', '07', '08', '09',
-                    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
-                    'celebrate', 'celebration', 'party', 'success', 'win', 'victory', 'done', 'complete',
-                    'congratulations', 'congrats', 'yay', 'hooray', 'awesome', 'great', 'excellent'
-                ].sort(() => Math.random() - 0.5);
-                
-                for (const ext of extensions) {
-                    for (const pattern of patterns) {
-                        const url = `./gifs/celebrate/${pattern}.${ext}`;
+                const response = await fetch(`./gifs/celebrate/`);
+                if (response.ok) {
+                    const html = await response.text();
+                    
+                    const imageFiles = [];
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const links = doc.querySelectorAll('a[href]');
+                    
+                    links.forEach(link => {
+                        const href = link.getAttribute('href');
+                        if (href && (
+                            href.toLowerCase().endsWith('.gif') || 
+                            href.toLowerCase().endsWith('.webp') || 
+                            href.toLowerCase().endsWith('.png') || 
+                            href.toLowerCase().endsWith('.jpg') || 
+                            href.toLowerCase().endsWith('.jpeg')
+                        ) && !href.startsWith('..')) {
+                            imageFiles.push(href);
+                        }
+                    });
+                    
+                    console.log(`Found ${imageFiles.length} celebration files:`, imageFiles);
+                    
+                    if (imageFiles.length > 0) {
+                        const randomFile = imageFiles[Math.floor(Math.random() * imageFiles.length)];
+                        const url = `./gifs/celebrate/${randomFile}`;
                         
-                        try {
-                            const img = new Image();
-                            img.src = url;
-                            
-                            await new Promise((resolve, reject) => {
-                                img.onload = resolve;
-                                img.onerror = reject;
-                                setTimeout(reject, 1000);
-                            });
-                            
+                        const img = new Image();
+                        img.onload = () => {
                             const completionDiv = document.getElementById('completion');
                             const existingGif = completionDiv.querySelector('.celebration-gif');
                             if (existingGif) existingGif.remove();
@@ -748,19 +722,20 @@
                             gifDiv.innerHTML = `<img src="${url}" alt="Celebration" style="max-width: 100%; border-radius: 12px;">`;
                             
                             completionDiv.insertBefore(gifDiv, completionDiv.querySelector('.completion-title'));
-                            console.log(`🎉 Found celebration GIF: ${url}`);
-                            return;
-                            
-                        } catch (e) {
-                            continue;
-                        }
+                            console.log(`🎉 Celebration loaded: ${url}`);
+                        };
+                        img.onerror = () => {
+                            console.log(`❌ Failed to load celebration: ${url}`);
+                        };
+                        img.src = url;
+                        return;
                     }
                 }
                 
-                console.log('❌ No celebration GIF found');
+                console.log('No celebration images found');
                 
             } catch (error) {
-                console.error('Error loading celebration GIF:', error);
+                console.error('Error loading celebration directory:', error);
             }
         }
 
@@ -772,6 +747,9 @@
         async function playVoice(text) {
             if (!voiceEnabled) return;
             
+            // Clean text for TTS - remove markdown and formatting
+            const cleanText = text.replace(/\*\*/g, '').replace(/\*/g, '').replace(/\n/g, ' ').trim();
+            
             const music = musicPlayer;
             if (music && !music.paused) fadeVolume(music, 0.05);
             
@@ -779,7 +757,7 @@
                 const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'xi-api-key': ELEVEN_API_KEY },
-                    body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2' })
+                    body: JSON.stringify({ text: cleanText, model_id: 'eleven_multilingual_v2' })
                 });
                 if (!res.ok) throw new Error(`Voice error ${res.status}`);
                 const buf = await res.arrayBuffer();
@@ -807,7 +785,13 @@
             btn.style.opacity = voiceEnabled ? '1' : '0.4';
             btn.className = voiceEnabled ? 'audio-btn enabled' : 'audio-btn';
             
-            // Update icon - volume-2 when on, volume-x when off
+            // Stop current voice if disabling
+            if (!voiceEnabled && voicePlayer) {
+                voicePlayer.pause();
+                voicePlayer.currentTime = 0;
+            }
+            
+            // Update icon
             const volumeOnSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
             const volumeOffSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M23 9l-6 6M17 9l6 6"/></svg>';
             
@@ -936,7 +920,10 @@
             
             const phase = phases[currentPhase];
             loadLocalGif(phase.gifFolder);
-            playVoice(phase.guidance);
+            
+            // Play full guidance text - instructions + guidance combined
+            const fullGuidance = `${phase.instructions} ${phase.guidance}`;
+            playVoice(fullGuidance);
         }
 
         function pauseTimer() {
@@ -962,7 +949,10 @@
             updateDisplay();
             const phase = phases[currentPhase];
             loadLocalGif(phase.gifFolder);
-            playVoice(phase.guidance);
+            
+            // Play full guidance text for new phase
+            const fullGuidance = `${phase.instructions} ${phase.guidance}`;
+            playVoice(fullGuidance);
         }
 
         function goToPhase(index) {
