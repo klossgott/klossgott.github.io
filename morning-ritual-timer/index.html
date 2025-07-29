@@ -702,17 +702,17 @@
         async function playVoice(text) {
             if (!voiceEnabled) return;
             
-            // Clean text for TTS - remove markdown and formatting
-            const cleanText = text.replace(/\*\*/g, '').replace(/\*/g, '').replace(/\n/g, ' ').trim();
+            console.log('🎤 Playing voice:', text);
             
             const music = musicPlayer;
             if (music && !music.paused) fadeVolume(music, 0.05);
             
+            // Try ElevenLabs first
             try {
                 const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'xi-api-key': ELEVEN_API_KEY },
-                    body: JSON.stringify({ text: cleanText, model_id: 'eleven_multilingual_v2' })
+                    body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2' })
                 });
                 if (!res.ok) throw new Error(`Voice error ${res.status}`);
                 const buf = await res.arrayBuffer();
@@ -729,7 +729,32 @@
                     await voice.play();
                 }
             } catch (e) {
-                console.error('Voice error', e);
+                console.error('🎤 ElevenLabs failed, using browser speech:', e);
+                
+                // Fallback to browser speech synthesis like original
+                if ('speechSynthesis' in window) {
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.rate = 0.8;
+                    utterance.pitch = 1.0;
+                    
+                    // Try to use a female voice
+                    const voices = speechSynthesis.getVoices();
+                    const femaleVoice = voices.find(voice => 
+                        voice.name.toLowerCase().includes('female') || 
+                        voice.name.toLowerCase().includes('woman') ||
+                        voice.name.toLowerCase().includes('samantha') ||
+                        voice.name.toLowerCase().includes('karen') ||
+                        voice.name.toLowerCase().includes('zira')
+                    );
+                    
+                    if (femaleVoice) {
+                        utterance.voice = femaleVoice;
+                        console.log('🎤 Using female voice:', femaleVoice.name);
+                    }
+                    
+                    speechSynthesis.speak(utterance);
+                }
+                
                 if (music && !music.paused) fadeVolume(music, 0.2);
             }
         }
