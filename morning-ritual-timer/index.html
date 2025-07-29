@@ -613,19 +613,16 @@
             }, stepTime);
         }
 
-        // Simple approach: read file list and pick random one
         async function loadLocalGif(folderName) {
             console.log(`🔍 Loading random GIF from: ${folderName}`);
             
             try {
-                // Try to fetch the file list
                 const response = await fetch(`https://klossgott.github.io/morning-ritual-timer/gifs/${folderName}/files.txt`);
                 if (response.ok) {
                     const fileList = await response.text();
                     const files = fileList.trim().split('\n').filter(f => f.trim());
                     
                     if (files.length > 0) {
-                        // Pick random file
                         const randomFile = files[Math.floor(Math.random() * files.length)].trim();
                         const url = `https://klossgott.github.io/morning-ritual-timer/gifs/${folderName}/${randomFile}`;
                         
@@ -654,7 +651,6 @@
             }
         }
 
-        // Same for celebration
         async function loadCelebrationGif() {
             console.log('🎉 Loading random celebration GIF...');
             
@@ -699,62 +695,52 @@
             document.getElementById('gifContainer').innerHTML = `<div class="fallback-icon">${phase.iconSvg.replace('width="24" height="24"', 'width="64" height="64"')}</div>`;
         }
 
+        // ELEVENLABS ONLY - NO BROWSER SPEECH EVER
         async function playVoice(text) {
-            if (!voiceEnabled) return;
+            if (!voiceEnabled) {
+                console.log('Voice disabled - skipping TTS');
+                return;
+            }
             
-            console.log('🎤 Playing voice:', text);
+            console.log('🎤 ElevenLabs TTS:', text);
             
             const music = musicPlayer;
             if (music && !music.paused) fadeVolume(music, 0.05);
             
-            // Try ElevenLabs first
             try {
                 const res = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'xi-api-key': ELEVEN_API_KEY },
-                    body: JSON.stringify({ text, model_id: 'eleven_multilingual_v2' })
+                    headers: { 
+                        'Content-Type': 'application/json', 
+                        'xi-api-key': ELEVEN_API_KEY 
+                    },
+                    body: JSON.stringify({ 
+                        text: text, 
+                        model_id: 'eleven_multilingual_v2' 
+                    })
                 });
-                if (!res.ok) throw new Error(`Voice error ${res.status}`);
-                const buf = await res.arrayBuffer();
-                const blob = new Blob([buf], { type: 'audio/mpeg' });
-                const url = URL.createObjectURL(blob);
-                const voice = voicePlayer;
-                if (voice) {
-                    voice.src = url;
-                    voice.volume = 1;
-                    voice.onended = () => {
-                        URL.revokeObjectURL(url);
+                
+                if (!res.ok) {
+                    throw new Error(`ElevenLabs API error: ${res.status} ${res.statusText}`);
+                }
+                
+                const audioBuffer = await res.arrayBuffer();
+                const audioBlob = new Blob([audioBuffer], { type: 'audio/mpeg' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                
+                if (voicePlayer) {
+                    voicePlayer.src = audioUrl;
+                    voicePlayer.volume = 1;
+                    voicePlayer.onended = () => {
+                        URL.revokeObjectURL(audioUrl);
                         if (music && !music.paused) fadeVolume(music, 0.2);
                     };
-                    await voice.play();
+                    await voicePlayer.play();
+                    console.log('🎤 ✅ ElevenLabs voice playing');
                 }
-            } catch (e) {
-                console.error('🎤 ElevenLabs failed, using browser speech:', e);
-                
-                // Fallback to browser speech synthesis like original
-                if ('speechSynthesis' in window) {
-                    const utterance = new SpeechSynthesisUtterance(text);
-                    utterance.rate = 0.8;
-                    utterance.pitch = 1.0;
-                    
-                    // Try to use a female voice
-                    const voices = speechSynthesis.getVoices();
-                    const femaleVoice = voices.find(voice => 
-                        voice.name.toLowerCase().includes('female') || 
-                        voice.name.toLowerCase().includes('woman') ||
-                        voice.name.toLowerCase().includes('samantha') ||
-                        voice.name.toLowerCase().includes('karen') ||
-                        voice.name.toLowerCase().includes('zira')
-                    );
-                    
-                    if (femaleVoice) {
-                        utterance.voice = femaleVoice;
-                        console.log('🎤 Using female voice:', femaleVoice.name);
-                    }
-                    
-                    speechSynthesis.speak(utterance);
-                }
-                
+            } catch (error) {
+                console.error('🎤 ❌ ElevenLabs failed:', error);
+                // NO FALLBACK - if ElevenLabs fails, stay silent
                 if (music && !music.paused) fadeVolume(music, 0.2);
             }
         }
@@ -765,13 +751,11 @@
             btn.style.opacity = voiceEnabled ? '1' : '0.4';
             btn.className = voiceEnabled ? 'audio-btn enabled' : 'audio-btn';
             
-            // Stop current voice if disabling
             if (!voiceEnabled && voicePlayer) {
                 voicePlayer.pause();
                 voicePlayer.currentTime = 0;
             }
             
-            // Update icon
             const volumeOnSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
             const volumeOffSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19"/><path d="M23 9l-6 6M17 9l6 6"/></svg>';
             
@@ -786,7 +770,6 @@
             btn.style.opacity = musicEnabled ? '1' : '0.4';
             btn.className = musicEnabled ? 'audio-btn enabled' : 'audio-btn';
             
-            // Update icon - music when on, music-off when off
             const musicOnSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>';
             const musicOffSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><path d="M23 9l-6 6M17 9l6 6"/></svg>';
             
@@ -901,7 +884,7 @@
             const phase = phases[currentPhase];
             loadLocalGif(phase.gifFolder);
             
-            // Play full guidance text - instructions + guidance combined
+            // Play full guidance text
             const fullGuidance = `${phase.instructions} ${phase.guidance}`;
             playVoice(fullGuidance);
         }
@@ -936,16 +919,10 @@
         }
 
         function goToPhase(index) {
-            // Allow phase switching whether timer is running or not
             currentPhase = index;
             timeLeft = phases[index].duration;
             updateDisplay();
             loadLocalGif(phases[index].gifFolder);
-            
-            // Play voice guidance when switching phases
-            const phase = phases[index];
-            const fullGuidance = `${phase.instructions} ${phase.guidance}`;
-            playVoice(fullGuidance);
             
             console.log(`Switched to phase ${index + 1}: ${phases[index].name}`);
         }
@@ -955,7 +932,6 @@
             document.getElementById('app').style.display = 'none';
             document.getElementById('completion').style.display = 'block';
             
-            // Load celebration GIF
             loadCelebrationGif();
             
             playVoice('Well done, you completed your morning ritual!');
