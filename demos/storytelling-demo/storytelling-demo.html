@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Cross and the Serpent Codex</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Trade+Winds&family=Protest+Revolution&family=La+Belle+Aurore&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.7;
+            color: #FFECD1;
+            background: #001524;
+            background-image: url('mayan-seamless-background-sm.jpg');
+            background-repeat: repeat;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .page {
+            padding: 60px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        
+        .page.grey-bg {
+            background: #3A4F50;
+        }
+        
+        .page.rust-bg {
+            background: #78290F;
+        }
+        
+        /* BACKGROUND HERO IMAGE - for cover and temple */
+        .page.hero-bg {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        .page.hero-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 21, 36, 0.85) 0%, rgba(58, 79, 80, 0.85) 100%);
+            z-index: 0;
+        }
+        
+        .page.hero-bg > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .title-page {
+            text-align: center;
+            padding: 100px 60px;
+            border: 2px solid #FF7D00;
+            position: relative;
+        }
+        
+        .title-page::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('serpent-title.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .title-page > * {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .mara-title-image {
+            width: 320px;
+            height: auto;
+            margin: 30px auto 0 auto;
+            display: block;
+            filter: drop-shadow(0 4px 20px rgba(255, 125, 0, 0.4));
+            opacity: 0;
+            transition: opacity 2s ease-in;
+            z-index: 10;
+        }
+        
+        .mara-title-image.visible {
+            opacity: 1;
+        }
+        
+        .main-title {
+            font-family: "Trade Winds", system-ui;
+            font-size: 3.2em;
+            background: linear-gradient(135deg, #E8C547 0%, #D4AF37 50%, #C9A961 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            font-weight: 400;
+            line-height: 1.3;
+            opacity: 0;
+            animation: fadeIn 2s ease-in forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .subtitle {
+            font-family: "Protest Revolution", sans-serif;
+            font-size: 1.6em;
+            background: linear-gradient(135deg, #7AE7C7 0%, #5BC9A8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 400;
+            line-height: 1.3;
+        }
+        
+        .prologue-number {
+            display: block;
+            font-size: 0.8em;
+        }
+        
+        .tagline {
+            font-family: "Protest Revolution", sans-serif;
+            font-size: 1.2em;
+            color: #FF7D00;
+            font-weight: 400;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        
+        /* STANDARD CHARACTER IMAGE - no background, proper sizing */
+        .character-image {
+            width: 320px;
+            height: auto;
+            margin: 50px auto;
+            display: block;
+            filter: drop-shadow(0 4px 20px rgba(255, 125, 0, 0.4));
+        }
+        
+        .character-name {
+            font-family: "Protest Revolution", sans-serif;
+            font-size: 2em;
+            color: #FF7D00;
+            margin-top: 5px;
+            font-weight: 400;
+            font-style: italic;
+        }
+        
+        /* HARLAN PHOTO - vintage style - STRAIGHTENED */
+        .harlan-photo {
+            width: 280px;
+            height: auto;
+            margin: 30px auto;
+            display: block;
+            border-radius: 4px;
+        }
+        
+        .photo-caption {
+            text-align: center;
+            font-family: Georgia, serif;
+            font-size: 1em;
+            color: #FFECD1;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        
+        .story-text {
+            font-size: 1.15em;
+            margin: 25px 0;
+            color: #FFECD1;
+            line-height: 1.8;
+            text-indent: 2em;
+        }
+        
+        .story-text:first-of-type {
+            text-indent: 0;
+        }
+        
+        .story-text strong {
+            font-weight: bold;
+        }
+        
+        /* SCENE IMAGE - proper sizing, no background bleed */
+        .scene-image {
+            max-width: 400px;
+            width: auto;
+            height: auto;
+            margin: 40px auto;
+            display: block;
+            border-radius: 8px;
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.5));
+        }
+        
+        /* FADE-IN IMAGE - 10 second fade on scroll */
+        .fade-in-image {
+            max-width: 400px;
+            width: auto;
+            height: auto;
+            margin: 40px auto;
+            display: block;
+            border-radius: 8px;
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.5));
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 10s ease-out, transform 10s ease-out;
+        }
+        
+        .fade-in-image.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .letter-section {
+            background: #FFECD1;
+            padding: 40px;
+            margin: 40px 0;
+            border-left: 5px solid #FF7D00;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .letter-opening {
+            font-family: "La Belle Aurore", cursive;
+            font-size: 1.4em;
+            color: #001524;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        .letter-text {
+            font-size: 1.1em;
+            line-height: 1.9;
+            color: #001524;
+            font-style: italic;
+        }
+        
+        .handwriting-box {
+            font-family: "La Belle Aurore", cursive;
+            font-size: 1.4em;
+            color: #001524;
+            line-height: 1.7;
+            padding: 25px;
+            background: #FFECD1;
+            border-radius: 4px;
+            margin: 25px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .serpent-quote {
+            font-family: "La Belle Aurore", cursive;
+            font-size: 1.3em;
+            color: #001524;
+            font-style: normal;
+            display: block;
+            padding: 20px;
+            background: #FFECD1;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+        
+        .chapter-title {
+            font-family: "Trade Winds", system-ui;
+            font-size: 2.8em;
+            background: linear-gradient(135deg, #E8C547 0%, #D4AF37 50%, #C9A961 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin: 60px 0 20px 0;
+            font-weight: 400;
+            line-height: 1.3;
+        }
+        
+        .chapter-number {
+            display: block;
+            font-size: 0.8em;
+        }
+        
+        .chapter-subtitle {
+            font-family: "Protest Revolution", sans-serif;
+            text-align: center;
+            color: #7AE7C7;
+            font-size: 1.4em;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+        
+        .chapter-placeholder-image {
+            max-width: 400px;
+            width: auto;
+            height: auto;
+            margin: 40px auto;
+            display: block;
+            border-radius: 8px;
+            filter: drop-shadow(0 4px 15px rgba(0, 0, 0, 0.5));
+        }
+        
+        .tension-box {
+            background: rgba(58, 79, 80, 0.4);
+            border-left: 5px solid #B33500;
+            padding: 25px 35px;
+            margin: 30px 0;
+            font-style: italic;
+            color: #FFECD1;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .puzzle-section {
+            padding: 45px;
+            margin: 40px 0;
+            border: 3px solid #FF7D00;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .puzzle-section.grey-puzzle {
+            background: #3A4F50;
+        }
+        
+        .puzzle-section.rust-puzzle {
+            background: #78290F;
+        }
+        
+        .puzzle-title {
+            font-family: "Protest Revolution", sans-serif;
+            font-size: 1.6em;
+            background: linear-gradient(135deg, #E8C547 0%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 400;
+            line-height: 1.3;
+        }
+        
+        .puzzle-number {
+            display: block;
+            font-size: 0.8em;
+        }
+        
+        .puzzle-header-image,
+        .puzzle-footer-image {
+            width: 258px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 2px;
+            max-width: 500px;
+            margin: 0 auto;
+            background: #78290F;
+            border: 4px solid #78290F;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+        
+        .puzzle-cell {
+            aspect-ratio: 1;
+            background: #FFECD1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "La Belle Aurore", cursive;
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #001524;
+        }
+        
+        .puzzle-cell.marked {
+            background: #E8C547;
+            position: relative;
+        }
+        
+        .puzzle-cell.marked::after {
+            content: '';
+            position: absolute;
+            bottom: 3px;
+            right: 3px;
+            width: 10px;
+            height: 10px;
+            background: #B33500;
+            border-radius: 50%;
+            box-shadow: 0 0 5px rgba(179, 53, 0, 0.8);
+        }
+        
+        .puzzle-image {
+            max-width: 350px;
+            height: auto;
+            display: block;
+            margin: 35px auto;
+            border-radius: 6px;
+        }
+        
+        .quote-box {
+            background: rgba(58, 79, 80, 0.4);
+            border-left: 5px solid #FF7D00;
+            padding: 25px 35px;
+            margin: 30px 0;
+            font-style: italic;
+            color: #FFECD1;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+        }
+        
+        .answer-section {
+            text-align: center;
+            margin: 45px 0;
+        }
+        
+        .answer-input {
+            width: 100%;
+            max-width: 520px;
+            padding: 18px;
+            font-size: 1.15em;
+            border: 3px solid #FF7D00;
+            border-radius: 6px;
+            margin: 25px auto;
+            display: block;
+            background: #001524;
+            color: #FFECD1;
+            font-family: Georgia, serif;
+        }
+        
+        .answer-input:focus {
+            outline: none;
+            border-color: #7AE7C7;
+            box-shadow: 0 0 15px rgba(122, 231, 199, 0.5);
+        }
+        
+        .answer-input::placeholder {
+            color: rgba(255, 236, 209, 0.5);
+        }
+        
+        .button {
+            background: #FF7D00;
+            color: #001524;
+            border: none;
+            padding: 16px 45px;
+            font-size: 1.15em;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 12px;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(255, 125, 0, 0.4);
+        }
+        
+        .button:hover {
+            background: #E8C547;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(232, 197, 71, 0.6);
+        }
+        
+        .button-secondary {
+            background: #3A4F50;
+            color: #FFECD1;
+        }
+        
+        .button-secondary:hover {
+            background: #78290F;
+        }
+        
+        .unlock-text {
+            font-family: "Protest Revolution", sans-serif;
+            font-size: 1.2em;
+            color: #7AE7C7;
+            font-weight: 400;
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .countdown {
+            font-family: 'Georgia', serif;
+            font-size: 1.15em;
+            font-weight: normal;
+            color: #FFECD1;
+        }
+    </style>
+</head>
+<body>
+    <!-- TITLE PAGE WITH BACKGROUND IMAGE -->
+    <div class="page title-page hero-bg" style="background-image: url('Mara1-trans.png');">
+        <h1 class="main-title">
+            Dr Cross &<br>
+            the Serpent Codex
+        </h1>
+        <p class="tagline">Digging up Danger, with</p>
+        <p class="character-name">Dr Mara Cross</p>
+        <img src="mara1.png" alt="Dr Mara Cross" class="mara-title-image">
+    </div>
+
+    <!-- PROLOGUE - GREY BACKGROUND -->
+    <div class="page grey-bg">
+        <h2 class="subtitle">
+            <span class="prologue-number">Prologue:</span>
+            The Package
+        </h2>
+        
+        <p class="story-text">
+            You are <strong>Dr Mara Cross</strong>, a renowned archaeologist. One humid morning in 2025, a package arrives at your door. The oilcloth binding is tied with hand-twisted cord, your address written in shaky capitals. No stamps.
+        </p>
+        
+        <p class="story-text">
+            You recognize the handwriting. Professor Harlan Marsh—officially dead for three years, lost in the Yucatán hunting the Serpent Codex, a book that promises immortality. Inside: his field journal, most pages dissolved to pulp. But three lines survive, scratched in charcoal:
+        </p>
+        
+        <div class="handwriting-box">
+            They're watching the house.<br>
+            Only the worthy will get the codex.<br>
+            Trust no one who offers help.
+        </div>
+        
+        <p class="story-text">
+            Your hands go cold. Folded in the journal's spine: a letter, the ink changing color three times, the pressure varying from steady to desperate.
+        </p>
+    </div>
+
+    <!-- THE LETTER - RUST BACKGROUND -->
+    <div class="page rust-bg">
+        <img src="Harlan.png" alt="Professor Harlan Marsh" class="harlan-photo">
+        <p class="photo-caption">Professor Harlan Marsh</p>
+        
+        <div class="letter-section">
+            <div class="letter-opening">
+                Mara—if you're reading this...
+            </div>
+            
+            <p class="letter-text">
+                I got it out before they found me. The Codex is real, and worse than the stories. I've hidden it in three locks.
+            </p>
+            
+            <p class="letter-text">
+                The Circle knows about you now. They'll come offering help—university credentials, resources, money. Do not trust them. The book changes people. Like something breathing on the back of your neck in an empty room. Solve the first lock. Then decide. Only you have the mind to see this through. —H
+            </p>
+        </div>
+        
+        <p class="story-text">
+            Clipped to the letter: a photograph. Harlan, gaunt, standing before a moss-covered wall. Behind him—a stone serpent, eyes catching the flash like glass. On the back: coordinates in the Yucatán, and one line:
+        </p>
+        
+        <div class="serpent-quote">
+            The serpent sees what you bring, not what you are.
+        </div>
+        
+        <p class="story-text">
+            You remember the last real conversation. You told him to stop chasing legends. He smiled: "What if legends are just history that survived?" Now you walk to the window. The street looks normal. Except—a dark sedan you don't recognize. Has it been there before? You close the curtains.
+        </p>
+    </div>
+
+    <!-- CHAPTER 1 WITH BACKGROUND IMAGE -->
+    <div class="page grey-bg hero-bg" style="background-image: url('mayan-ruins.png');">
+        <h2 class="chapter-title">
+            <span class="chapter-number">Chapter 1</span>
+            The Serpent's Warning
+        </h2>
+        
+        <img src="serpent-statue.png" alt="Chapter visual" class="chapter-placeholder-image">
+        
+        <p class="story-text">
+            Two days later, the temple emerges through jungle like a tooth through gums. Limestone strangled by vines, rust-colored water bleeding from cracks. You packed rope and a machete, telling yourself you're just confirming the coordinates. But you know better.
+        </p>
+        
+        <p class="story-text">
+            The serpent carving dominates the entrance, coiled around the doorway. Its jade eyes are wrong—too bright, like light shines through from behind. You touch one. Colder than the surrounding stone. The doorway exhales, carrying the smell of copper and decay.
+        </p>
+        
+        <p class="story-text">
+            For a moment, you're stuck. The serpent stares back, unmoving. This is a riddle. "The Serpent sees what you bring, not what you are." What did Harlan mean? What are you supposed to bring?
+        </p>
+        
+        <p class="story-text">
+            You hold up Harlan's photograph. Nothing. Then—click. Deep in the wall. Stone shifts beneath the serpent's jaw. A passage opens, darkness waiting.
+        </p>
+    </div>
+
+    <!-- THE CHAMBER - RUST BACKGROUND -->
+    <div class="page rust-bg">
+        <p class="story-text">
+            The passage forces you to duck. Twenty feet in, it opens to a chamber no bigger than a closet. Three walls: ancient Mayan glyphs. The fourth wall: recent work. Cleaner cuts. Different tools. A 9×9 grid carved in limestone, jade pegs filling some squares.
+        </p>
+        
+        <p class="story-text">
+            Harlan made this. He didn't just find the Codex—he locked it himself.
+        </p>
+        
+        <div class="handwriting-box">
+            The old locks were too easy. I made my own. You'll recognize the pattern, Mara. We played these games in my office when you were avoiding your dissertation. If you paid attention then, you'll remember now. —H
+        </div>
+        
+        <p class="story-text">
+            From the passage behind you: footsteps. Multiple. Trying to be quiet. Failing.
+        </p>
+    </div>
+
+    <!-- PUZZLE 1.1 - GREY BACKGROUND -->
+    <div class="page grey-bg">
+        <div class="puzzle-section grey-puzzle">
+            <h3 class="puzzle-title">
+                <span class="puzzle-number">Puzzle 1.1</span>
+                Harlan's Grid
+            </h3>
+            
+            <!-- FADE-IN IMAGE -->
+            <img src="Mara2.png" alt="Mara puzzles it out" class="fade-in-image">
+            
+            <p class="story-text">
+                You recognize it—Harlan's Grid of Nine. He'd sketch these on napkins during lunch, challenging you before your coffee cooled. "A properly ordered mind sees the pattern," he'd say. "Chaos hides in the gaps."
+            </p>
+            
+            <p class="story-text">
+                Your flashlight catches scratches around certain numbers. Deliberate marks. Harlan showing you something.
+            </p>
+            
+            <div class="tension-box">
+                A voice echoes from the passage: "Dr Cross. We know you're here. The Codex wasn't meant for one person. Harlan learned that. Let us help you."
+            </div>
+            
+            <p class="story-text">
+                Do not trust them. Maybe <span class="countdown" id="countdown">three</span> minutes left.
+            </p>
+            
+            <div style="margin: 30px 0;">
+                <img src="puzzle-red-eyes1.png" alt="The Red Eye Puzzle" class="puzzle-header-image">
+                
+                <div class="puzzle-grid">
+                    <div class="puzzle-cell marked">5</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell marked">7</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    
+                    <div class="puzzle-cell">6</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell">1</div>
+                    <div class="puzzle-cell marked">9</div>
+                    <div class="puzzle-cell">5</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell">9</div>
+                    <div class="puzzle-cell">8</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell">6</div>
+                    <div class="puzzle-cell"></div>
+                    
+                    <div class="puzzle-cell">8</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell">6</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell marked">3</div>
+                    
+                    <div class="puzzle-cell">4</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell">8</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell">3</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell">1</div>
+                    
+                    <div class="puzzle-cell">7</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell">2</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell">6</div>
+                    
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell">6</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell marked">2</div>
+                    <div class="puzzle-cell">8</div>
+                    <div class="puzzle-cell"></div>
+                    
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell">4</div>
+                    <div class="puzzle-cell">1</div>
+                    <div class="puzzle-cell">9</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell">5</div>
+                    
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell">8</div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell"></div>
+                    <div class="puzzle-cell marked">7</div>
+                    <div class="puzzle-cell">9</div>
+                </div>
+                
+                <img src="puzzle-red-eyes2.png" alt="The Red Eye Puzzle" class="puzzle-footer-image">
+            </div>
+            
+            <div class="quote-box">
+                "Three guardians stand in line within the heart of the stone chamber. The first watches over the east, the second guards the center, and the last slumbers at the western edge. Only when their eyes align can the path be revealed."
+            </div>
+        </div>
+    </div>
+
+    <!-- PUZZLE 1.2 - RUST BACKGROUND -->
+    <div class="page rust-bg">
+        <div class="puzzle-section rust-puzzle">
+            <h3 class="puzzle-title">
+                <span class="puzzle-number">Puzzle 1.2</span>
+                The Serpent Cipher
+            </h3>
+            
+            <!-- FADE-IN IMAGE -->
+            <img src="Mara3.png" alt="Mara" class="fade-in-image">
+            
+            <p class="story-text">
+                Final number placed. Three guardian faces carved in the wall rotate. All turn center. Their mouths open. A compartment springs free—one you didn't see before.
+            </p>
+            
+            <p class="story-text">
+                Inside: a jade serpent pendant. More journal pages. And beneath, carved in stone:
+            </p>
+            
+            <img src="snake-clock.png" alt="Serpent and Clock Cipher" class="puzzle-image">
+            
+            <p class="story-text">
+                Serpent coiled around clock face. Roman numerals. Crude carving—Harlan wasn't an artist. But you remember. His seminar on encoding. "Symbols carry multiple meanings. The trick is knowing which layer to read."
+            </p>
+            
+            <div class="handwriting-box">
+                Only when numbers and symbols unite can the path forward be revealed.
+            </div>
+            
+            <div class="tension-box">
+                "Dr Cross. Step away from the wall." A light sweeps the chamber. They're inside now.
+            </div>
+            
+            <p class="story-text">
+                The Grid gives numbers. The Cipher gives meaning. Combine them. Unlock the next chamber.
+            </p>
+            
+            <div class="answer-section">
+                <input type="text" class="answer-input" placeholder="Enter your answer">
+                <br>
+                <button class="button">Check Answer</button>
+                
+                <p class="unlock-text">Unlock Chapter 2 Next!</p>
+                <br>
+                
+                <!-- FADE-IN IMAGE -->
+                <img src="Mara4.png" alt="Mara succeeds" class="fade-in-image">
+                
+                <button class="button-secondary">Return to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FADE-IN EFFECT ON SCROLL for all fade-in images including mara title image
+        const fadeInImages = document.querySelectorAll('.fade-in-image, .mara-title-image');
+        
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        });
+        
+        fadeInImages.forEach(img => {
+            imageObserver.observe(img);
+        });
+        
+        // COUNTDOWN TIMER - starts when puzzle section is fully visible
+        const puzzleSection = document.querySelector('.puzzle-section');
+        let countdownStarted = false;
+        let currentCount = 3;
+        
+        const countdownObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !countdownStarted) {
+                    countdownStarted = true;
+                    const countdownElement = document.getElementById('countdown');
+                    
+                    const countdownInterval = setInterval(() => {
+                        currentCount--;
+                        if (currentCount > 0) {
+                            countdownElement.textContent = currentCount;
+                        } else {
+                            countdownElement.textContent = 'zero';
+                            clearInterval(countdownInterval);
+                        }
+                    }, 1000);
+                }
+            });
+        }, {
+            threshold: 0.8
+        });
+        
+        if (puzzleSection) {
+            countdownObserver.observe(puzzleSection);
+        }
+        
+        // PUZZLE INTERACTION
+        document.querySelector('.button').addEventListener('click', function() {
+            const answer = document.querySelector('.answer-input').value.trim();
+            if (answer) {
+                alert('The mechanism clicks. The floor drops six inches. The walls begin to move.');
+            } else {
+                alert('Nothing happens. Try again.');
+            }
+        });
+        
+        document.querySelector('.button-secondary').addEventListener('click', function() {
+            if (confirm('Leave now? Harlan\'s sacrifice will be for nothing.')) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
